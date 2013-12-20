@@ -1,10 +1,10 @@
-# Capistrano-Slack
+# Slackistrano
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
 ## Requirements
 
-- Capistrano 3
+- Capistrano >= 3
 - Ruby >= 1.9
 - A Slack account
 
@@ -12,7 +12,7 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano-slack'
+    gem 'slackistrano'
 
 And then execute:
 
@@ -25,7 +25,7 @@ of the token as you'll need it later.
 
 Require the library in your application's Capfile:
 
-    require 'capistrano-slack'
+    require 'slackistrano'
 
 Set your team and token in your application's config/deploy.rb:
 
@@ -36,7 +36,7 @@ Optionally, override the other slack settings:
 
     set :slack_icon_url,     ->{ "http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40" }
     set :slack_channel,      ->{ "#general" }
-    set :slack_username,     ->{ "Capistrano" }
+    set :slack_username,     ->{ "Slackistrano" }
 
 Test your setup by running:
 
