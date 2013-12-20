@@ -1,12 +1,12 @@
 # Capistrano-Slack
 
-Sends notifications to Slack about capistrano deployments.
+Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
 ## Requirements
 
 - Capistrano 3
 - Ruby >= 1.9
-- A Slack account (https://slack.com).
+- A Slack account
 
 ## Installation
 
@@ -40,14 +40,13 @@ Optionally, override the other slack settings:
 
 Test your setup by running:
 
-    cap production slack:deploy:starting
-    cap production slack:deploy:finished
+    $ cap production slack:deploy:starting
+    $ cap production slack:deploy:finished
 
 ## Usage
 
 Deploy your application like normal and you should see messages in the channel
 you specified.
-
 
 
 ## Contributing
