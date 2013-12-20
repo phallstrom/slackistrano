@@ -44,6 +44,6 @@ namespace :load do
     set :slack_token,        ->{ nil } # Token from Incoming WebHooks. Required.
     set :slack_icon_url,     ->{ "http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40" }
     set :slack_channel,      ->{ "#general" }
-    set :slack_username,     ->{ "Capistrano" }
+    set :slack_username,     ->{ "Slackistrano" }
   end
 end
