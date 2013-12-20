@@ -48,6 +48,11 @@ Test your setup by running:
 Deploy your application like normal and you should see messages in the channel
 you specified.
 
+## TODO
+
+- Add tests.
+- Notify about incorrect configuration settings.
+- Notify about unsuccessfull HTTP POSTs.
 
 ## Contributing
 
