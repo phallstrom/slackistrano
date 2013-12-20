@@ -2,6 +2,8 @@
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
+If you need Capistrano v2 support, check out [capistrano-slack](https://github.com/j-mcnally/capistrano-slack).
+
 ## Requirements
 
 - Capistrano >= 3
