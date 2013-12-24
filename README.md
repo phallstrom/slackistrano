@@ -16,7 +16,7 @@ If you need Capistrano v2 support, check out [capistrano-slack](https://github.c
 
 Add this line to your application's Gemfile:
 
-    gem 'slackistrano'
+    gem 'slackistrano', require: false
 
 And then execute:
 
