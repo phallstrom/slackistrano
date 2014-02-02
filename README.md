@@ -1,6 +1,7 @@
 # Slackistrano
 
 [![Gem Version](https://badge.fury.io/rb/slackistrano.png)](http://badge.fury.io/rb/slackistrano)
+[![Code Climate](https://codeclimate.com/github/supremegolf/slackistrano.png)](https://codeclimate.com/github/supremegolf/slackistrano)
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
