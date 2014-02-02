@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    slackistrano (0.0.3)
+      json
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    json (1.8.1)
+    rake (10.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rake
+  slackistrano!
