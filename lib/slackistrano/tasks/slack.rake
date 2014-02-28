@@ -1,9 +1,8 @@
-
 namespace :slack do
   namespace :deploy do
     task :starting do
       run_locally do
-        text = "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}."
+        text = "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'unknown stage'}."
         Slackistrano.post(
           team: fetch(:slack_team),
           token: fetch(:slack_token),
@@ -19,7 +18,7 @@ namespace :slack do
 
     task :finished do
       run_locally do
-        text = "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}."
+        text = "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'unknown stage'}."
         Slackistrano.post(
           team: fetch(:slack_team),
           token: fetch(:slack_token),
