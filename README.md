@@ -40,9 +40,14 @@ Set your team and token in your application's config/deploy.rb:
 
 Optionally, override the other slack settings:
 
-    set :slack_icon_url,     ->{ "http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40" }
-    set :slack_channel,      ->{ "#general" }
-    set :slack_username,     ->{ "Slackistrano" }
+    set :slack_icon_url,     ->{ 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
+    set :slack_channel,      ->{ '#general' }
+    set :slack_username,     ->{ 'Slackistrano' }
+    set :slack_run_starting, ->{ true }
+    set :slack_run_finished, ->{ true }
+
+Note: You may wish to disable one of the notifications if another service (ex:
+Honeybadger) also displays a deploy notification.
 
 Test your setup by running:
 
