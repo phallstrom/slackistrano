@@ -11,7 +11,7 @@ If you need Capistrano v2 support, check out [capistrano-slack](https://github.c
 ## Requirements
 
 - Capistrano >= 3
-- Ruby >= 1.9
+- Ruby >= 2.0
 - A Slack account
 
 ## Installation
