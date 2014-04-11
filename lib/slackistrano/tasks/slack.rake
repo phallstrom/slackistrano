@@ -5,7 +5,6 @@ namespace :slack do
     task :starting do
       if fetch(:slack_run_starting)
         run_locally do
-          text = "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}."
           Slackistrano.post(
             team: fetch(:slack_team),
             token: fetch(:slack_token),
@@ -13,7 +12,7 @@ namespace :slack do
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
-              text: text
+              text: fetch(:slack_msg_starting)
             }
           )
         end
@@ -23,7 +22,6 @@ namespace :slack do
     task :finished do
       if fetch(:slack_run_finished)
         run_locally do
-          text = "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}."
           Slackistrano.post(
             team: fetch(:slack_team),
             token: fetch(:slack_token),
@@ -31,7 +29,7 @@ namespace :slack do
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
-              text: text
+              text: fetch(:slack_msg_finished)
             }
           )
         end
@@ -52,5 +50,7 @@ namespace :load do
     set :slack_username,     ->{ 'Slackistrano' }
     set :slack_run_starting, ->{ true } # Set to false to disable starting message.
     set :slack_run_finished, ->{ true } # Set to false to disable finished message.
+    set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+    set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
   end
 end
