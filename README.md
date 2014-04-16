@@ -41,6 +41,7 @@ Set your team and token in your application's config/deploy.rb:
 Optionally, override the other slack settings:
 
     set :slack_icon_url,     ->{ 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
+    set :slack_icon_emoji,   ->{ nil } # will override icon_url
     set :slack_channel,      ->{ '#general' }
     set :slack_username,     ->{ 'Slackistrano' }
     set :slack_run_starting, ->{ true }

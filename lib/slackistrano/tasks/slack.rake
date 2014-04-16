@@ -12,6 +12,7 @@ namespace :slack do
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
+              icon_emoji: fetch(:slack_icon_emoji),
               text: fetch(:slack_msg_starting)
             }
           )
@@ -29,6 +30,7 @@ namespace :slack do
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
+              icon_emoji: fetch(:slack_icon_emoji),
               text: fetch(:slack_msg_finished)
             }
           )
@@ -46,6 +48,7 @@ namespace :slack do
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
+              icon_emoji: fetch(:slack_icon_emoji),
               text: fetch(:slack_msg_failed)
             }
           )
@@ -66,6 +69,7 @@ namespace :load do
     set :slack_token,        ->{ nil } # Token from Incoming WebHooks. Required.
     set :slack_channel,      ->{ nil } # Channel to post to. Optional. Defaults to WebHook setting.
     set :slack_icon_url,     ->{ 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
+    set :slack_icon_emoji,   ->{ nil } # Emoji to use. Overrides icon_url. Must be a string (ex: ':shipit:')
     set :slack_username,     ->{ 'Slackistrano' }
     set :slack_run_starting, ->{ true } # Set to false to disable starting message.
     set :slack_run_finished, ->{ true } # Set to false to disable finished message.
