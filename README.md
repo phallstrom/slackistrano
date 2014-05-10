@@ -67,7 +67,6 @@ you specified.
 
 ## TODO
 
-- Add tests.
 - Notify about incorrect configuration settings.
 - Notify about unsuccessfull HTTP POSTs.
 
