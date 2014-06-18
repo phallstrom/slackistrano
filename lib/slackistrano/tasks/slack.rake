@@ -59,9 +59,9 @@ namespace :slack do
   end
 end
 
-before 'deploy:starting', 'slack:deploy:starting'
-after  'deploy:finished', 'slack:deploy:finished'
-after  'deploy:failed',   'slack:deploy:failed'
+after 'deploy:starting', 'slack:deploy:starting'
+after 'deploy:finished', 'slack:deploy:finished'
+after 'deploy:failed',   'slack:deploy:failed'
 
 namespace :load do
   task :defaults do
