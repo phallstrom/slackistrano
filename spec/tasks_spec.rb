@@ -5,8 +5,10 @@ describe Slackistrano do
     Rake::Task['load:defaults'].invoke
   end
 
-  it "invokes slack:deploy:starting before deploy:starting" do
-    expect(Rake::Task['deploy:starting'].prerequisites).to include 'slack:deploy:starting'
+  it "invokes slack:deploy:starting after deploy:starting" do
+    set :slack_run_starting, ->{ true }
+    expect(Slackistrano).to receive :post
+    Rake::Task['deploy:starting'].execute
   end
 
   it "invokes slack:deploy:finished after deploy:finished" do
