@@ -10,7 +10,7 @@ If you need Capistrano v2 support, check out [capistrano-slack](https://github.c
 
 ## Requirements
 
-- Capistrano >= 3
+- Capistrano >= 3.1.0
 - Ruby >= 2.0
 - A Slack account
 
