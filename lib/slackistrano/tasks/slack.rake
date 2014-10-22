@@ -8,6 +8,7 @@ namespace :slack do
           Slackistrano.post(
             team: fetch(:slack_team),
             token: fetch(:slack_token),
+            via_slackbot: fetch(:slack_via_slackbot),
             payload: {
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
@@ -26,6 +27,7 @@ namespace :slack do
           Slackistrano.post(
             team: fetch(:slack_team),
             token: fetch(:slack_token),
+            via_slackbot: fetch(:slack_via_slackbot),
             payload: {
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
@@ -44,12 +46,13 @@ namespace :slack do
           Slackistrano.post(
             team: fetch(:slack_team),
             token: fetch(:slack_token),
+            via_slackbot: fetch(:slack_via_slackbot),
             payload: {
               channel: fetch(:slack_channel),
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              text: fetch(:slack_msg_failed)
+              text: fetch(:slack_msg_failed),
             }
           )
         end
@@ -77,5 +80,6 @@ namespace :load do
     set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}." }
     set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}." }
     set :slack_msg_failed,   ->{ "*ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}." }
+    set :slack_via_slackbot, ->{ false } # Set to true to send the message via slackbot instead of webhook
   end
 end

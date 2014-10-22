@@ -26,8 +26,12 @@ And then execute:
 
 ## Configuration
 
-Set up an "Incoming WebHooks" integration in Slack.  Make a note 
-of the token as you'll need it later.
+You have two options to notify a channel in Slack when you deploy:
+
+ 1. Using *Incoming WebHooks* integration, offering more options but requires one of the five free integrations. This is the default option.
+ 2. Using *Slackbot*, which will not use one of the five free integrations. Enable via the `:slack_via_slackbot` option.
+
+In both case, you need to enable the integration inside Slack and get the token that will be needed later.
 
 Require the library in your application's Capfile:
 
@@ -41,7 +45,7 @@ Set your team and token in your application's config/deploy.rb:
 Optionally, override the other slack settings:
 
     set :slack_icon_url,     ->{ 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
-    set :slack_icon_emoji,   ->{ nil } # will override icon_url
+    set :slack_icon_emoji,   ->{ nil } # will override icon_url, Must be a string (ex: ':shipit:')
     set :slack_channel,      ->{ '#general' }
     set :slack_username,     ->{ 'Slackistrano' }
     set :slack_run_starting, ->{ true }
@@ -50,6 +54,7 @@ Optionally, override the other slack settings:
     set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_failed,   ->{ "*ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+    set :slack_via_slackbot, ->{ false } # Set to true to send the message via slackbot instead of webhook
 
 **Note**: You may wish to disable one of the notifications if another service (ex:
 Honeybadger) also displays a deploy notification.
