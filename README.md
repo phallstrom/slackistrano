@@ -28,9 +28,8 @@ And then execute:
 
 You have two options to notify a channel in Slack when you deploy:
 
- 1. Using *Incoming WebHooks* integration, offering more options but require to use on of your 5 free integrations. `Default option`
- .
- 2. Using *Slackbot*, here by defaut so doesn't use one of your 5 free integrations. Enable via `set :slack_via_slackbot, true`.
+ 1. Using *Incoming WebHooks* integration, offering more options but requires one of the five free integrations. This is the default option.
+ 2. Using *Slackbot*, which will not use one of the five free integrations. Enable via the `:slack_via_slackbot` option.
 
 In both case, you need to enable the integration inside Slack and get the token that will be needed later.
 
