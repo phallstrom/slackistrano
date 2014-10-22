@@ -26,8 +26,13 @@ And then execute:
 
 ## Configuration
 
-Set up an "Incoming WebHooks" integration in Slack.  Make a note 
-of the token as you'll need it later.
+You have two options to notify a channel in Slack when you deploy:
+
+ 1. Using *Incoming WebHooks* integration, offering more options but require to use on of your 5 free integrations. `Default option`
+ .
+ 2. Using *Slackbot*, here by defaut so doesn't use one of your 5 free integrations. Enable via `set :slack_via_slackbot, true`.
+
+In both case, you need to enable the integration inside Slack and get the token that will be needed later.
 
 Require the library in your application's Capfile:
 
@@ -50,6 +55,7 @@ Optionally, override the other slack settings:
     set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_failed,   ->{ "*ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+    set :slack_via_slackbot, ->{ false } # Set to true to send the message via slackbot instead of webhook
 
 **Note**: You may wish to disable one of the notifications if another service (ex:
 Honeybadger) also displays a deploy notification.

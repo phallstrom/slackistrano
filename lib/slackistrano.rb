@@ -10,7 +10,6 @@ module Slackistrano
       uri = URI(URI.encode("https://#{team}.slack.com/services/hooks/slackbot?token=#{token}&channel=#{payload[:channel]}"))
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-        puts uri.request_uri, payload[:text]
         response = http.request_post uri.request_uri, payload[:text]
       end
     else
