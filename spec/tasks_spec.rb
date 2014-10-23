@@ -5,35 +5,11 @@ describe Slackistrano do
     Rake::Task['load:defaults'].invoke
   end
 
-  it "invokes slack:deploy:starting after deploy:starting" do
-    set :slack_run_starting, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:starting'].execute
-  end
-
-  it "invokes slack:deploy:finished after deploy:finished" do
-    set :slack_run_finished, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:finished'].execute
-  end
-
-  it "invokes slack:deploy:failed after deploy:failed" do
-    set :slack_run_failed, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:failed'].execute
-  end
-
   %w[starting finished failed].each do |stage|
 
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
       expect(Slackistrano).to receive :post
-      Rake::Task["slack:deploy:#{stage}"].execute
-    end
-
-    it "does not post to slack on slack:deploy:#{stage} when disabled" do
-      set "slack_run_#{stage}".to_sym, ->{ false }
-      expect(Slackistrano).not_to receive :post
       Rake::Task["slack:deploy:#{stage}"].execute
     end
 
