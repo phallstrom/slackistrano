@@ -48,13 +48,16 @@ Optionally, override the other slack settings:
     set :slack_icon_emoji,   ->{ nil } # will override icon_url, Must be a string (ex: ':shipit:')
     set :slack_channel,      ->{ '#general' }
     set :slack_username,     ->{ 'Slackistrano' }
-    set :slack_run_starting, ->{ true }
-    set :slack_run_finished, ->{ true }
-    set :slack_run_failed,   ->{ true }
     set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_failed,   ->{ "*ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_via_slackbot, ->{ false } # Set to true to send the message via slackbot instead of webhook
+
+Add inside you deploy.rb the hook you want to add to notify Slack
+
+    after 'deploy:starting', 'slack:deploy:starting'
+    after 'deploy:finished', 'slack:deploy:finished'
+    after 'deploy:failed',   'slack:deploy:failed'
 
 **Note**: You may wish to disable one of the notifications if another service (ex:
 Honeybadger) also displays a deploy notification.

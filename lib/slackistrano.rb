@@ -1,3 +1,4 @@
+require 'rake'
 require 'slackistrano/version'
 require 'net/http'
 require 'json'
