@@ -27,7 +27,7 @@ module Slackistrano
     uri = URI(URI.encode("https://#{team}.slack.com/services/hooks/slackbot?token=#{token}&channel=#{payload[:channel]}"))
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      response = http.request_post uri.request_uri, payload[:text]
+      http.request_post uri.request_uri, payload[:text]
     end
   end
 
@@ -35,8 +35,15 @@ module Slackistrano
   #
   #
   def self.post_as_webhook(team: nil, token: nil, webhook: webhook, payload: {})
-    uri = URI("https://#{team}.slack.com/services/hooks/incoming-webhook")
-    res = Net::HTTP.post_form(uri, 'token' => token, 'payload' => payload.to_json)
+    params = {'payload' => payload.to_json}
+
+    if webhook.nil?
+      webhook = "https://#{team}.slack.com/services/hooks/incoming-webhook"
+      params.merge!('token' => token)
+    end
+
+    uri = URI(webhook)
+    Net::HTTP.post_form(uri, params)
   end
 
 
