@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Slackistrano::VERSION
   gem.authors       = ["Philip Hallstrom"]
   gem.email         = ["philip@supremegolf.com"]
-  gem.description   = %q{}
-  gem.summary       = %q{}
+  gem.description   = %q{Send notifications to Slack about Capistrano deployments.}
+  gem.summary       = %q{Send notifications to Slack about Capistrano deployments.}
   gem.homepage      = "https://github.com/supremegolf/slackistrano"
   gem.license       = 'MIT'
 
