@@ -13,6 +13,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/supremegolf/slackistrano"
   gem.license       = 'MIT'
 
+  gem.required_ruby_version = '>= 2.0.0'
+
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
