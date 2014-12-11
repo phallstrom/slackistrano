@@ -41,6 +41,7 @@ describe Slackistrano do
       set "slack_run_#{stage}".to_sym, ->{ true }
       set :slack_team,         ->{ 'team' }
       set :slack_token,        ->{ 'token' }
+      set :slack_webhook,      ->{ 'webhook' }
       set :slack_channel,      ->{ 'channel' }
       set :slack_icon_url,     ->{ 'http://icon.url' }
       set :slack_icon_emoji,   ->{ ':emoji:' }
@@ -48,6 +49,7 @@ describe Slackistrano do
       expect(Slackistrano).to receive(:post).with(
         team: 'team',
         token: 'token',
+        webhook: 'webhook',
         via_slackbot: false,
         payload: {
           channel: 'channel',

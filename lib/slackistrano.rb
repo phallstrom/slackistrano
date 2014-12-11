@@ -9,11 +9,11 @@ module Slackistrano
   #
   #
   #
-  def self.post(team: nil, token: nil, via_slackbot: false, payload: {})
+  def self.post(team: nil, token: nil, webhook: nil, via_slackbot: false, payload: {})
     if via_slackbot
-      post_as_slackbot(team: team, token: token, payload: payload)
+      post_as_slackbot(team: team, token: token, webhook: webhook, payload: payload)
     else
-      post_as_webhook(team: team, token: token, payload: payload)
+      post_as_webhook(team: team, token: token, webhook: webhook, payload: payload)
     end
   rescue => e
     puts "There was an error notifying Slack."
@@ -23,7 +23,7 @@ module Slackistrano
   #
   #
   #
-  def self.post_as_slackbot(team: nil, token: nil, payload: {})
+  def self.post_as_slackbot(team: nil, token: nil, webhook: webhook, payload: {})
     uri = URI(URI.encode("https://#{team}.slack.com/services/hooks/slackbot?token=#{token}&channel=#{payload[:channel]}"))
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
@@ -34,7 +34,7 @@ module Slackistrano
   #
   #
   #
-  def self.post_as_webhook(team: nil, token: nil, payload: {})
+  def self.post_as_webhook(team: nil, token: nil, webhook: webhook, payload: {})
     uri = URI("https://#{team}.slack.com/services/hooks/incoming-webhook")
     res = Net::HTTP.post_form(uri, 'token' => token, 'payload' => payload.to_json)
   end
