@@ -31,14 +31,21 @@ You have two options to notify a channel in Slack when you deploy:
  1. Using *Incoming WebHooks* integration, offering more options but requires one of the five free integrations. This is the default option.
  2. Using *Slackbot*, which will not use one of the five free integrations. Enable via the `:slack_via_slackbot` option.
 
-In both case, you need to enable the integration inside Slack and get the token that will be needed later.
+In both case, you need to enable the integration inside Slack and get the token and/or webhook url that will be needed later.
+
+
 
 Require the library in your application's Capfile:
 
     require 'slackistrano'
 
-Set your team and token in your application's config/deploy.rb:
+If you post using *Incoming Webhooks* you need to set your webhook url in your application's config/deploy.rb:
 
+    set :slack_webhook, "https://hooks.slack.com/services/XXX/XXX/XXX"
+
+If you choose to post using *Slackbot* you **must** set your team and and token in your application's config/deploy.rb:
+
+    set :slack_via_slackbot, true
     set :slack_team, "supremegolf"
     set :slack_token, "xxxxxxxxxxxxxxxxxxxxxxxx"
 
@@ -54,7 +61,6 @@ Optionally, override the other slack settings:
     set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
     set :slack_msg_failed,   ->{ "*ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
-    set :slack_via_slackbot, ->{ false } # Set to true to send the message via slackbot instead of webhook
 
 **Note**: You may wish to disable one of the notifications if another service (ex:
 Honeybadger) also displays a deploy notification.
