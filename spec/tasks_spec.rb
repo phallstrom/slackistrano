@@ -23,8 +23,7 @@ describe Slackistrano do
     Rake::Task['deploy:failed'].execute
   end
 
-  %w[starting finished failed].each do |stage|
-
+  shared_examples_for "slack notification" do |stage, color = nil|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
       expect(Slackistrano).to receive :post
@@ -38,14 +37,18 @@ describe Slackistrano do
     end
 
     it "calls Slackistrano.post with all the right arguments on slack:deploy:#{stage}" do
-      set "slack_run_#{stage}".to_sym, ->{ true }
+      set :"slack_run_#{stage}", ->{ true }
       set :slack_team,         ->{ 'team' }
       set :slack_token,        ->{ 'token' }
       set :slack_webhook,      ->{ 'webhook' }
       set :slack_channel,      ->{ 'channel' }
       set :slack_icon_url,     ->{ 'http://icon.url' }
       set :slack_icon_emoji,   ->{ ':emoji:' }
-      set "slack_msg_#{stage}".to_sym, ->{ 'text message' }
+      set :"slack_msg_#{stage}", ->{ 'text message' }
+
+      attachment = {text: 'text message'}
+      attachment[:color] = color unless color.nil?
+
       expect(Slackistrano).to receive(:post).with(
         team: 'team',
         token: 'token',
@@ -56,11 +59,22 @@ describe Slackistrano do
           username: 'Slackistrano',
           icon_url: 'http://icon.url',
           icon_emoji: ':emoji:',
-          text: 'text message'
+          attachments: [attachment]
         }
       )
       Rake::Task["slack:deploy:#{stage}"].execute
     end
-  end # of stage loop
+  end
 
+  describe 'build is starting' do
+    it_should_behave_like "slack notification", :starting
+  end
+
+  describe 'build has finished' do
+    it_should_behave_like "slack notification", :finished, 'good'
+  end
+
+  describe 'build has failed' do
+    it_should_behave_like "slack notification", :failed, 'danger'
+  end
 end
