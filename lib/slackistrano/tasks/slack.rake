@@ -15,11 +15,9 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [
-                {
+              attachments: [{
                   text: fetch(:slack_msg_starting)
-                }
-              ]
+              }]
             }
           )
         end
@@ -39,12 +37,10 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [
-                {
+              attachments: [{
                   color: 'good',
                   text: fetch(:slack_msg_finished)
-                }
-              ]
+              }]
             }
           )
         end
@@ -64,12 +60,10 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [
-                {
+              attachments: [{
                   color: 'danger',
                   text: fetch(:slack_msg_failed)
-                }
-              ]
+              }]
             }
           )
         end
