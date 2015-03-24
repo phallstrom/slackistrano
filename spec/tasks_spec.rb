@@ -59,7 +59,11 @@ describe Slackistrano do
       set :"slack_channel_#{stage}", -> { channel_for_stage }
       expected_channel = channel_for_stage || 'channel'
 
-      attachment = {text: 'text message', color: color}.reject{|k,v| v.nil?}
+      attachment = {
+        text: 'text message', 
+        color: color,
+        mrkdwn_in: [:text]
+      }.reject{|k,v| v.nil?}
 
       expect(Slackistrano).to receive(:post).with(
         team: 'team',
