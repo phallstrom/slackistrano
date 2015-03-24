@@ -51,16 +51,19 @@ If you choose to post using *Slackbot* you **must** set your team and and token 
 
 Optionally, override the other slack settings:
 
-    set :slack_icon_url,     ->{ 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
-    set :slack_icon_emoji,   ->{ nil } # will override icon_url, Must be a string (ex: ':shipit:')
-    set :slack_channel,      ->{ '#general' }
-    set :slack_username,     ->{ 'Slackistrano' }
-    set :slack_run_starting, ->{ true }
-    set :slack_run_finished, ->{ true }
-    set :slack_run_failed,   ->{ true }
-    set :slack_msg_starting, ->{ "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
-    set :slack_msg_finished, ->{ "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
-    set :slack_msg_failed,   ->{ "#{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
+    set :slack_icon_url,         -> { 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
+    set :slack_icon_emoji,       -> { nil } # will override icon_url, Must be a string (ex: ':shipit:')
+    set :slack_channel,          -> { '#general' }
+    set :slack_channel_starting, -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
+    set :slack_channel_finished, -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
+    set :slack_channel_failed,   -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
+    set :slack_username,         -> { 'Slackistrano' }
+    set :slack_run_starting,     -> { true }
+    set :slack_run_finished,     -> { true }
+    set :slack_run_failed,       -> { true }
+    set :slack_msg_starting,     -> { "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
+    set :slack_msg_finished,     -> { "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
+    set :slack_msg_failed,       -> { "#{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
 
 **Note**: You may wish to disable one of the notifications if another service (ex:
 Honeybadger) also displays a deploy notification.

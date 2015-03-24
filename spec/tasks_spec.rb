@@ -23,7 +23,7 @@ describe Slackistrano do
     Rake::Task['deploy:failed'].execute
   end
 
-  shared_examples_for "slack notification" do |stage, color = nil|
+  %w[starting finished failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
       expect(Slackistrano).to receive :post
@@ -35,19 +35,31 @@ describe Slackistrano do
       expect(Slackistrano).not_to receive :post
       Rake::Task["slack:deploy:#{stage}"].execute
     end
+  end
 
-    it "calls Slackistrano.post with all the right arguments on slack:deploy:#{stage}" do
-      set :"slack_run_#{stage}", ->{ true }
-      set :slack_team,         ->{ 'team' }
-      set :slack_token,        ->{ 'token' }
-      set :slack_webhook,      ->{ 'webhook' }
-      set :slack_channel,      ->{ 'channel' }
-      set :slack_icon_url,     ->{ 'http://icon.url' }
-      set :slack_icon_emoji,   ->{ ':emoji:' }
-      set :"slack_msg_#{stage}", ->{ 'text message' }
+  [ # stage, color, channel
+    ['starting', nil, nil],
+    ['finished', 'good', nil],
+    ['failed', 'danger', nil],
+    ['starting', nil, 'starting_channel'],
+    ['finished', 'good', 'finished_channel'],
+    ['failed', 'danger', 'failed_channel'],
+  ].each do |stage, color, channel_for_stage|
+  
+    it "calls Slackistrano.post with the right arguments for stage=#{stage}, color=#{color}, channel_for_stage=#{channel_for_stage}" do
+      set :"slack_run_#{stage}", -> { true }
+      set :slack_team,           -> { 'team' }
+      set :slack_token,          -> { 'token' }
+      set :slack_webhook,        -> { 'webhook' }
+      set :slack_channel,        -> { 'channel' }
+      set :slack_icon_url,       -> { 'http://icon.url' }
+      set :slack_icon_emoji,     -> { ':emoji:' }
+      set :"slack_msg_#{stage}", -> { 'text message' }
 
-      attachment = {text: 'text message'}
-      attachment[:color] = color unless color.nil?
+      set :"slack_channel_#{stage}", -> { channel_for_stage }
+      expected_channel = channel_for_stage || 'channel'
+
+      attachment = {text: 'text message', color: color}.reject{|k,v| v.nil?}
 
       expect(Slackistrano).to receive(:post).with(
         team: 'team',
@@ -55,7 +67,7 @@ describe Slackistrano do
         webhook: 'webhook',
         via_slackbot: false,
         payload: {
-          channel: 'channel',
+          channel: expected_channel,
           username: 'Slackistrano',
           icon_url: 'http://icon.url',
           icon_emoji: ':emoji:',
@@ -66,15 +78,5 @@ describe Slackistrano do
     end
   end
 
-  describe 'build is starting' do
-    it_should_behave_like "slack notification", :starting
-  end
 
-  describe 'build has finished' do
-    it_should_behave_like "slack notification", :finished, 'good'
-  end
-
-  describe 'build has failed' do
-    it_should_behave_like "slack notification", :failed, 'danger'
-  end
 end
