@@ -16,7 +16,8 @@ namespace :slack do
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
-                  text: fetch(:slack_msg_starting)
+                  text: fetch(:slack_msg_starting),
+                  mrkdwn_in: [:text]
               }]
             }
           )
@@ -39,7 +40,8 @@ namespace :slack do
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
                   color: 'good',
-                  text: fetch(:slack_msg_finished)
+                  text: fetch(:slack_msg_finished),
+                  mrkdwn_in: [:text]
               }]
             }
           )
@@ -62,7 +64,8 @@ namespace :slack do
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
                   color: 'danger',
-                  text: fetch(:slack_msg_failed)
+                  text: fetch(:slack_msg_failed),
+                  mrkdwn_in: [:text]
               }]
             }
           )
