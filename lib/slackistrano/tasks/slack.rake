@@ -16,8 +16,9 @@ namespace :slack do
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
                   title: fetch(:slack_title_starting),
+                  pretext: fetch(:slack_pretext_starting),
                   text: fetch(:slack_msg_starting),
-                  mrkdwn_in: [:text]
+                  mrkdwn_in: [:text, :pretext]
               }]
             }
           )
@@ -41,8 +42,9 @@ namespace :slack do
               attachments: [{
                   color: 'good',
                   title: fetch(:slack_title_finished),
+                  pretext: fetch(:slack_pretext_finished),
                   text: fetch(:slack_msg_finished),
-                  mrkdwn_in: [:text]
+                  mrkdwn_in: [:text, :pretext]
               }]
             }
           )
@@ -66,8 +68,9 @@ namespace :slack do
               attachments: [{
                   color: 'danger',
                   title: fetch(:slack_title_failed),
+                  pretext: fetch(:slack_pretext_failed),
                   text: fetch(:slack_msg_failed),
-                  mrkdwn_in: [:text]
+                  mrkdwn_in: [:text, :pretext]
               }]
             }
           )
@@ -106,5 +109,8 @@ namespace :load do
     set :slack_title_starting,   -> { nil }
     set :slack_title_finished,   -> { nil }
     set :slack_title_failed,     -> { nil }
+    set :slack_pretext_starting, -> { nil }
+    set :slack_pretext_finished, -> { nil }
+    set :slack_pretext_failed,   -> { nil }
   end
 end
