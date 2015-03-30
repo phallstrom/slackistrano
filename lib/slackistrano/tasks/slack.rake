@@ -1,4 +1,3 @@
-
 namespace :slack do
   namespace :deploy do
 
@@ -16,6 +15,7 @@ namespace :slack do
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
+                  title: fetch(:slack_title_starting),
                   text: fetch(:slack_msg_starting),
                   mrkdwn_in: [:text]
               }]
@@ -40,6 +40,7 @@ namespace :slack do
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
                   color: 'good',
+                  title: fetch(:slack_title_finished),
                   text: fetch(:slack_msg_finished),
                   mrkdwn_in: [:text]
               }]
@@ -64,6 +65,7 @@ namespace :slack do
               icon_emoji: fetch(:slack_icon_emoji),
               attachments: [{
                   color: 'danger',
+                  title: fetch(:slack_title_failed),
                   text: fetch(:slack_msg_failed),
                   mrkdwn_in: [:text]
               }]
@@ -101,5 +103,8 @@ namespace :load do
     set :slack_msg_starting,     -> { "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_finished,     -> { "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_failed,       -> { "#{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
+    set :slack_title_starting,   -> { nil }
+    set :slack_title_finished,   -> { nil }
+    set :slack_title_failed,     -> { nil }
   end
 end
