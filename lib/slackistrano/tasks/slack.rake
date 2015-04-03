@@ -1,5 +1,14 @@
 namespace :slack do
   namespace :deploy do
+    def make_attachments(stage, options={})
+      attachments = options.merge({
+        title: fetch(:"slack_title_#{stage}"),
+        pretext: fetch(:"slack_pretext_#{stage}"),
+        text: fetch(:"slack_msg_#{stage}"),
+        mrkdwn_in: [:text, :pretext]
+      }).reject{|k, v| v.nil? }
+      [attachments]
+    end
 
     task :starting do
       if fetch(:slack_run_starting)
@@ -14,12 +23,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  title: fetch(:slack_title_starting),
-                  pretext: fetch(:slack_pretext_starting),
-                  text: fetch(:slack_msg_starting),
-                  mrkdwn_in: [:text, :pretext]
-              }]
+              attachments: make_attachments(:starting)
             }
           )
         end
@@ -39,13 +43,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  color: 'good',
-                  title: fetch(:slack_title_finished),
-                  pretext: fetch(:slack_pretext_finished),
-                  text: fetch(:slack_msg_finished),
-                  mrkdwn_in: [:text, :pretext]
-              }]
+              attachments: make_attachments(:finished, color: 'good')
             }
           )
         end
@@ -65,13 +63,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  color: 'danger',
-                  title: fetch(:slack_title_failed),
-                  pretext: fetch(:slack_pretext_failed),
-                  text: fetch(:slack_msg_failed),
-                  mrkdwn_in: [:text, :pretext]
-              }]
+              attachments: make_attachments(:failed, color: 'danger')
             }
           )
         end
