@@ -45,7 +45,7 @@ describe Slackistrano do
     ['finished', 'good', 'finished_channel'],
     ['failed', 'danger', 'failed_channel'],
   ].each do |stage, color, channel_for_stage|
-  
+
     it "calls Slackistrano.post with the right arguments for stage=#{stage}, color=#{color}, channel_for_stage=#{channel_for_stage}" do
       set :"slack_run_#{stage}", -> { true }
       set :slack_team,           -> { 'team' }
@@ -60,9 +60,9 @@ describe Slackistrano do
       expected_channel = channel_for_stage || 'channel'
 
       attachment = {
-        text: 'text message', 
+        text: 'text message',
         color: color,
-        mrkdwn_in: [:text]
+        mrkdwn_in: [:text, :pretext]
       }.reject{|k,v| v.nil?}
 
       expect(Slackistrano).to receive(:post).with(

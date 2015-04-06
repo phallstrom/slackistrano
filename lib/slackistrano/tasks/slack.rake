@@ -1,6 +1,14 @@
-
 namespace :slack do
   namespace :deploy do
+    def make_attachments(stage, options={})
+      attachments = options.merge({
+        title: fetch(:"slack_title_#{stage}"),
+        pretext: fetch(:"slack_pretext_#{stage}"),
+        text: fetch(:"slack_msg_#{stage}"),
+        mrkdwn_in: [:text, :pretext]
+      }).reject{|k, v| v.nil? }
+      [attachments]
+    end
 
     task :starting do
       if fetch(:slack_run_starting)
@@ -15,10 +23,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  text: fetch(:slack_msg_starting),
-                  mrkdwn_in: [:text]
-              }]
+              attachments: make_attachments(:starting)
             }
           )
         end
@@ -38,11 +43,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  color: 'good',
-                  text: fetch(:slack_msg_finished),
-                  mrkdwn_in: [:text]
-              }]
+              attachments: make_attachments(:finished, color: 'good')
             }
           )
         end
@@ -62,11 +63,7 @@ namespace :slack do
               username: fetch(:slack_username),
               icon_url: fetch(:slack_icon_url),
               icon_emoji: fetch(:slack_icon_emoji),
-              attachments: [{
-                  color: 'danger',
-                  text: fetch(:slack_msg_failed),
-                  mrkdwn_in: [:text]
-              }]
+              attachments: make_attachments(:failed, color: 'danger')
             }
           )
         end
@@ -101,5 +98,11 @@ namespace :load do
     set :slack_msg_starting,     -> { "#{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_finished,     -> { "#{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_failed,       -> { "#{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
+    set :slack_title_starting,   -> { nil }
+    set :slack_title_finished,   -> { nil }
+    set :slack_title_failed,     -> { nil }
+    set :slack_pretext_starting, -> { nil }
+    set :slack_pretext_finished, -> { nil }
+    set :slack_pretext_failed,   -> { nil }
   end
 end
