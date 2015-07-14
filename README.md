@@ -43,6 +43,10 @@ If you post using *Incoming Webhooks* you need to set your webhook url in your a
 
     set :slack_webhook, "https://hooks.slack.com/services/XXX/XXX/XXX"
 
+and the channel you want slackistrano to post to:
+
+    set :slack_channel, '#general'
+
 If you choose to post using *Slackbot* you **must** set your team and and token in your application's config/deploy.rb:
 
     set :slack_via_slackbot, true
@@ -53,7 +57,6 @@ Optionally, override the other slack settings:
 
     set :slack_icon_url,         -> { 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
     set :slack_icon_emoji,       -> { nil } # will override icon_url, Must be a string (ex: ':shipit:')
-    set :slack_channel,          -> { '#general' }
     set :slack_channel_starting, -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
     set :slack_channel_finished, -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
     set :slack_channel_failed,   -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
