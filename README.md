@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/slackistrano.png)](http://badge.fury.io/rb/slackistrano)
 [![Code Climate](https://codeclimate.com/github/phallstrom/slackistrano.png)](https://codeclimate.com/github/phallstrom/slackistrano)
-[![Build Status](https://travis-ci.org/phallstrom/slackistrano.png?branch=master)](https://travis-ci.org/phallstrom/slackistrano)
+[![Build Status](https://circleci.com/gh/phallstrom/slackistrano/tree/master.svg?style=svg)](https://circleci.com/gh/phallstrom/slackistrano/tree/master)
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
