@@ -1,8 +1,8 @@
 # Slackistrano
 
 [![Gem Version](https://badge.fury.io/rb/slackistrano.png)](http://badge.fury.io/rb/slackistrano)
-[![Code Climate](https://codeclimate.com/github/supremegolf/slackistrano.png)](https://codeclimate.com/github/supremegolf/slackistrano)
-[![Build Status](https://travis-ci.org/supremegolf/slackistrano.png?branch=master)](https://travis-ci.org/supremegolf/slackistrano)
+[![Code Climate](https://codeclimate.com/github/phallstrom/slackistrano.png)](https://codeclimate.com/github/phallstrom/slackistrano)
+[![Build Status](https://travis-ci.org/phallstrom/slackistrano.png?branch=master)](https://travis-ci.org/phallstrom/slackistrano)
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
@@ -44,7 +44,7 @@ If you post using *Incoming Webhooks* you need to set your webhook url in your a
 If you choose to post using *Slackbot* you **must** set your team, token, and channel in your application's config/deploy.rb:
 
     set :slack_via_slackbot, true
-    set :slack_team, "supremegolf"
+    set :slack_team, "teamname"
     set :slack_token, "xxxxxxxxxxxxxxxxxxxxxxxx"
     set :slack_channel, '#general'
 

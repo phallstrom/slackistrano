@@ -7,10 +7,10 @@ Gem::Specification.new do |gem|
   gem.name          = "slackistrano"
   gem.version       = Slackistrano::VERSION
   gem.authors       = ["Philip Hallstrom"]
-  gem.email         = ["philip@supremegolf.com"]
+  gem.email         = ["philip@pjkh.com"]
   gem.description   = %q{Send notifications to Slack about Capistrano deployments.}
   gem.summary       = %q{Send notifications to Slack about Capistrano deployments.}
-  gem.homepage      = "https://github.com/supremegolf/slackistrano"
+  gem.homepage      = "https://github.com/phallstrom/slackistrano"
   gem.license       = 'MIT'
 
   gem.required_ruby_version = '>= 2.0.0'
