@@ -61,9 +61,9 @@ Optionally, override the other slack settings:
     set :slack_run_finished,     -> { true }
     set :slack_run_failed,       -> { true }
     set :slack_deploy_user,      -> { ENV['USER'] || ENV['USERNAME'] }
-    set :slack_msg_starting,     -> { "#{fetch :slack_deploy_user} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
-    set :slack_msg_finished,     -> { "#{fetch :slack_deploy_user} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
-    set :slack_msg_failed,       -> { "#{fetch :slack_deploy_user} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}" }
+    set :slack_msg_starting,     -> { "#{fetch :slack_deploy_user} has started deploying branch *#{fetch :branch}* of #{fetch :application} to #{"*#{fetch :stage}*" rescue 'an unknown stage'}" }
+    set :slack_msg_finished,     -> { "#{fetch :slack_deploy_user} has finished deploying branch *#{fetch :branch}* of #{fetch :application} to #{"*#{fetch :stage}*" rescue 'an unknown stage'}" }
+    set :slack_msg_failed,       -> { "#{fetch :slack_deploy_user} failed to deploy branch *#{fetch :branch}* of #{fetch :application} to #{"*#{fetch :stage}*" rescue 'an unknown stage'}" }
     set :slack_title_starting,   -> { nil }
     set :slack_title_finished,   -> { nil }
     set :slack_title_failed,     -> { nil }
