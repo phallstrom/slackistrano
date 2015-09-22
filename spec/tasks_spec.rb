@@ -62,6 +62,8 @@ describe Slackistrano do
       attachment = {
         text: 'text message',
         color: color,
+        fields: [],
+        fallback: nil,
         mrkdwn_in: [:text, :pretext]
       }.reject{|k,v| v.nil?}
 
