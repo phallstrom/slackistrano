@@ -97,7 +97,7 @@ $ cap production slack:deploy:finished
 $ cap production slack:deploy:failed
 ```
 
-### Formatted messages
+## Formatted messages
 
 Slack allows you to send complex content, composed by fields. You can use the `fields` and `fallback` variables in order to have a well formatted message as follows:
 
@@ -131,7 +131,7 @@ set :slack_fields_finished, [
 ```
 
 It will produce the following format:
-![Formatted message](http://i.imgur.com/RlXZHKT.png)
+![Formatted message](https://raw.github.com/phallstrom/slackistrano/master/examples/formatting_with_fields.png)
 
 **Note 1:** *The `fallback` field is required in order to display notifications when using `fields`.*
 
