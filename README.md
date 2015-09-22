@@ -131,7 +131,7 @@ set :slack_fields_finished, [
 ```
 
 It will produce the following format:
-![Formatted message](https://raw.github.com/phallstrom/slackistrano/master/examples/formatting_with_fields.png)
+![Formatted message](https://raw.githubusercontent.com/phallstrom/slackistrano/master/examples/fomatting_with_fields.png)
 
 **Note 1:** *The `fallback` field is required in order to display notifications when using `fields`.*
 
