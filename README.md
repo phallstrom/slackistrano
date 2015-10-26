@@ -135,7 +135,7 @@ It will produce the following format:
 
 **Note 1:** *The `fallback` field is required in order to display notifications when using `fields`.*
 
-**Note 2:** *The `fields` requires configuration requires you to use webhooks.*
+**Note 2:** *The `fields` configuration requires you to use webhooks.*
 
 More information: [https://api.slack.com/docs/attachments](https://api.slack.com/docs/attachments)
 
