@@ -18,7 +18,7 @@ describe Slackistrano do
   end
 
   it "invokes slack:deploy:rollback after deploy:finishing_rollback" do
-    set :slack_run_finished, ->{ true }
+    set :slack_run_rollback, ->{ true }
     expect(Slackistrano).to receive :post
     Rake::Task['deploy:finishing_rollback'].execute
   end
