@@ -1,7 +1,9 @@
 namespace :deploy do
   task :starting do
   end
-  task :finished do
+  task :finishing do
+  end
+  task :finishing_rollback do
   end
   task :failed do
   end

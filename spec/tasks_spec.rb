@@ -11,10 +11,16 @@ describe Slackistrano do
     Rake::Task['deploy:starting'].execute
   end
 
-  it "invokes slack:deploy:finished after deploy:finished" do
+  it "invokes slack:deploy:finished after deploy:finishing" do
     set :slack_run_finished, ->{ true }
     expect(Slackistrano).to receive :post
-    Rake::Task['deploy:finished'].execute
+    Rake::Task['deploy:finishing'].execute
+  end
+
+  it "invokes slack:deploy:rollback after deploy:finishing_rollback" do
+    set :slack_run_finished, ->{ true }
+    expect(Slackistrano).to receive :post
+    Rake::Task['deploy:finishing_rollback'].execute
   end
 
   it "invokes slack:deploy:failed after deploy:failed" do
@@ -23,7 +29,7 @@ describe Slackistrano do
     Rake::Task['deploy:failed'].execute
   end
 
-  %w[starting finished failed].each do |stage|
+  %w[starting finished rollback failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
       expect(Slackistrano).to receive :post
@@ -40,9 +46,11 @@ describe Slackistrano do
   [ # stage, color, channel
     ['starting', nil, nil],
     ['finished', 'good', nil],
+    ['rollback', '#4CBDEC', nil],
     ['failed', 'danger', nil],
     ['starting', nil, 'starting_channel'],
     ['finished', 'good', 'finished_channel'],
+    ['rollback', '#4CBDEC', 'rollback_channel'],
     ['failed', 'danger', 'failed_channel'],
   ].each do |stage, color, channel_for_stage|
 
