@@ -5,31 +5,34 @@ describe Slackistrano do
     Rake::Task['load:defaults'].invoke
   end
 
-  it "invokes slack:deploy:starting after deploy:starting" do
-    set :slack_run_starting, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:starting'].execute
+  describe "before/after hooks" do
+
+    it "invokes slack:deploy:updating before deploy:updating" do
+      expect(Rake::Task['deploy:updating'].prerequisites).to include 'slack:deploy:updating'
+    end
+
+    it "invokes slack:deploy:reverting before deploy:reverting" do
+      expect(Rake::Task['deploy:reverting'].prerequisites).to include 'slack:deploy:reverting'
+    end
+
+    it "invokes slack:deploy:updated after deploy:finishing" do
+      expect(Rake::Task['slack:deploy:updated']).to receive(:invoke)
+      Rake::Task['deploy:finishing'].execute
+    end
+
+    it "invokes slack:deploy:reverted after deploy:finishing_rollback" do
+      expect(Rake::Task['slack:deploy:reverted']).to receive(:invoke)
+      Rake::Task['deploy:finishing_rollback'].execute
+    end
+
+    it "invokes slack:deploy:failed after deploy:failed" do
+      expect(Rake::Task['slack:deploy:failed']).to receive(:invoke)
+      Rake::Task['deploy:failed'].execute
+    end
+
   end
 
-  it "invokes slack:deploy:finished after deploy:finishing" do
-    set :slack_run_finished, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:finishing'].execute
-  end
-
-  it "invokes slack:deploy:rollback after deploy:finishing_rollback" do
-    set :slack_run_rollback, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:finishing_rollback'].execute
-  end
-
-  it "invokes slack:deploy:failed after deploy:failed" do
-    set :slack_run_failed, ->{ true }
-    expect(Slackistrano).to receive :post
-    Rake::Task['deploy:failed'].execute
-  end
-
-  %w[starting finished rollback failed].each do |stage|
+  %w[updating reverting updated reverted failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
       expect(Slackistrano).to receive :post
@@ -44,13 +47,14 @@ describe Slackistrano do
   end
 
   [ # stage, color, channel
-    ['starting', nil, nil],
-    ['finished', 'good', nil],
-    ['rollback', '#4CBDEC', nil],
+    ['updating', nil, nil],
+    ['reverting', nil, nil],
+    ['updated', 'good', nil],
+    ['reverted', '#4CBDEC', nil],
     ['failed', 'danger', nil],
-    ['starting', nil, 'starting_channel'],
-    ['finished', 'good', 'finished_channel'],
-    ['rollback', '#4CBDEC', 'rollback_channel'],
+    ['updating', nil, 'starting_channel'],
+    ['updated', 'good', 'finished_channel'],
+    ['reverted', '#4CBDEC', 'rollback_channel'],
     ['failed', 'danger', 'failed_channel'],
   ].each do |stage, color, channel_for_stage|
 
