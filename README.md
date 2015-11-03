@@ -129,10 +129,9 @@ Slack allows you to send complex content, composed by fields. You can use the `f
 
 ```ruby
 set :slack_revision, `git rev-parse origin/master`.strip!
-set :slack_title_finished, nil
-set :slack_msg_finished, nil
-set :slack_fallback_finished, "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}"
-set :slack_fields_finished, [
+set :slack_msg_updated, nil
+set :slack_fallback_updated, "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}"
+set :slack_fields_updated, [
   {
     "title": "Project",
     "value": "<https://github.com/XXXXX/#{fetch(:application)}|#{fetch(:application)}>",
