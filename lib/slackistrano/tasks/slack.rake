@@ -131,13 +131,15 @@ namespace :load do
     set :slack_token,              -> { nil } # Token from Incoming WebHooks.
     set :slack_webhook,            -> { nil } # Incoming WebHook URL.
     set :slack_via_slackbot,       -> { false } # Set to true to send the message via slackbot instead of webhook
-
     set :slack_channel,            -> { nil } # Channel to post to. Optional. Defaults to WebHook setting.
-    set :slack_channel_updating,   -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
-    set :slack_channel_reverting,  -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
-    set :slack_channel_updated,    -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
-    set :slack_channel_reverted,   -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
-    set :slack_channel_failed,     -> { nil } # Channel to post to. Optional. Defaults to :slack_channel.
+
+    # Optional, overridable settings
+
+    set :slack_channel_updating,   -> { nil } # Channel to post to. Defaults to :slack_channel.
+    set :slack_channel_reverting,  -> { nil } # Channel to post to. Defaults to :slack_channel.
+    set :slack_channel_updated,    -> { nil } # Channel to post to. Defaults to :slack_channel.
+    set :slack_channel_reverted,   -> { nil } # Channel to post to. Defaults to :slack_channel.
+    set :slack_channel_failed,     -> { nil } # Channel to post to. Defaults to :slack_channel.
 
     set :slack_icon_url,           -> { 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
     set :slack_icon_emoji,         -> { nil } # Emoji to use. Overrides icon_url. Must be a string (ex: ':shipit:')
@@ -155,7 +157,9 @@ namespace :load do
     set :slack_msg_reverting,      -> { "#{fetch :slack_deploy_user} has started rolling back branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_updated,        -> { "#{fetch :slack_deploy_user} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
     set :slack_msg_reverted,       -> { "#{fetch :slack_deploy_user} has finished rolling back branch of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
-    set :slack_msg_failed,         -> { "#{fetch :slack_deploy_user} has failed to #{fetch :slack_deploy_or_rollback} branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
+
+    # :slack_or_deploy is set in several tasks above.
+    set :slack_msg_failed,         -> { "#{fetch :slack_deploy_user} has failed to #{fetch(:slack_deploy_or_rollback) || 'deploy'} branch #{fetch :branch} of #{fetch :application} to #{fetch :stage, 'an unknown stage'}" }
 
     set :slack_fields_updating,    -> { [] }
     set :slack_fields_reverting,   -> { [] }
