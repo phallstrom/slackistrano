@@ -12,20 +12,22 @@ namespace :slack do
       [attachments]
     end
     
-    post_slackistrano = ->(channel, attachments) do
-      Slackistrano.post(
-        team: fetch(:slack_team),
-        token: fetch(:slack_token),
-        webhook: fetch(:slack_webhook),
-        via_slackbot: fetch(:slack_via_slackbot),
-        payload: {
-          channel: channel,
-          username: fetch(:slack_username),
-          icon_url: fetch(:slack_icon_url),
-          icon_emoji: fetch(:slack_icon_emoji),
-          attachments: attachments
-        }
-      )
+    post_slackistrano = ->(channels, attachments) do
+      Array(channels).each do |channel|
+        Slackistrano.post(
+          team: fetch(:slack_team),
+          token: fetch(:slack_token),
+          webhook: fetch(:slack_webhook),
+          via_slackbot: fetch(:slack_via_slackbot),
+          payload: {
+            channel: channel,
+            username: fetch(:slack_username),
+            icon_url: fetch(:slack_icon_url),
+            icon_emoji: fetch(:slack_icon_emoji),
+            attachments: attachments
+          }
+        )
+      end
     end
 
     task :updating do
