@@ -35,13 +35,13 @@ describe Slackistrano do
   %w[updating reverting updated reverted failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
-      expect(Slackistrano).to receive :post
+      expect(Slackistrano).to receive(:post).and_return(double(code: '200'))
       Rake::Task["slack:deploy:#{stage}"].execute
     end
 
     it "does not post to slack on slack:deploy:#{stage} when disabled" do
       set "slack_run_#{stage}".to_sym, ->{ false }
-      expect(Slackistrano).not_to receive :post
+      expect(Slackistrano).not_to receive(:post)
       Rake::Task["slack:deploy:#{stage}"].execute
     end
   end
@@ -91,7 +91,7 @@ describe Slackistrano do
           icon_emoji: ':emoji:',
           attachments: [attachment]
         }
-      )
+      ).and_return(double(code: '200'))
       Rake::Task["slack:deploy:#{stage}"].execute
     end
   end
