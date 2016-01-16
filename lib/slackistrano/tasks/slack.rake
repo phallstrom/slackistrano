@@ -1,5 +1,6 @@
 namespace :slack do
   namespace :deploy do
+
     def make_attachments(stage, options={})
       attachments = options.merge({
         title: fetch(:"slack_title_#{stage}"),
@@ -10,6 +11,33 @@ namespace :slack do
         mrkdwn_in: [:text, :pretext]
       }).reject{|k, v| v.nil? }
       [attachments]
+    end
+
+    def make_payload(stage)
+      payload = {
+        channel:  fetch(:slack_channel),
+        username: fetch(:slack_username),
+        icon_url: fetch(:slack_icon_url),
+        icon_emoji: fetch(:slack_icon_emoji),
+      }
+
+      stage_channel = "slack_channel_#{stage.to_s}".to_sym
+      if fetch(stage_channel)
+        payload[:channel] = fetch(stage_channel)
+      end
+
+      payload[:attachments] = case stage
+                            when :updated
+                              make_attachments(stage, color: 'good')
+                            when :reverted
+                              make_attachments(stage, color: '#4CBDEC')
+                            when :failed
+                              make_attachments(stage, color: 'danger')
+                            else
+                              make_attachments(stage)
+                            end
+
+      payload
     end
 
     def post_message(stage)
@@ -45,32 +73,7 @@ namespace :slack do
       end
     end
 
-    def make_payload(stage)
-      payload = {
-        channel:  fetch(:slack_channel),
-        username: fetch(:slack_username),
-        icon_url: fetch(:slack_icon_url),
-        icon_emoji: fetch(:slack_icon_emoji),
-      }
-
-      stage_channel = "slack_channel_#{stage.to_s}".to_sym
-      if fetch(stage_channel)
-        payload[:channel] = fetch(stage_channel)
-      end
-
-      payload[:attachments] = case stage
-                            when :updated
-                              make_attachments(stage, color: 'good')
-                            when :reverted
-                              make_attachments(stage, color: '#4CBDEC')
-                            when :failed
-                              make_attachments(stage, color: 'danger')
-                            else
-                              make_attachments(stage)
-                            end
-
-      payload
-    end
+    ######################################################################
 
     task :updating do
       set(:slack_deploy_or_rollback, 'deploy')
@@ -89,7 +92,6 @@ namespace :slack do
         end
       end
     end
-
 
     task :updated do
       if fetch(:slack_run_updated)
