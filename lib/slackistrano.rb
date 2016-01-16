@@ -29,7 +29,7 @@ module Slackistrano
     text = payload[:attachments].collect { |a| a[:text] }.join("\n")
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      http.request_post uri.request_uri, text
+      http.request_post uri, text
     end
   end
 
