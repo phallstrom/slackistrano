@@ -23,11 +23,12 @@ namespace :slack do
                                         webhook: webhook,
                                         via_slackbot: via_slackbot,
                                         payload: payload)
-      if http_response.code != '200'
-        error sprintf("[local] Failed slackistrano Slack API %s %s %s",
-                      http_response.uri,
-                      http_response.code,
-                      http_response.message)
+      if http_response.code !~ /^2/
+        error("[slackistrano] Slack API Failure!")
+        error("[slackistrano]   URI: #{http_response.uri}")
+        error("[slackistrano]   Code: #{http_response.code}")
+        error("[slackistrano]   Message: #{http_response.message}")
+        error("[slackistrano]   Body: #{http_response.body}") if http_response.message != http_response.body
       end
     end
 

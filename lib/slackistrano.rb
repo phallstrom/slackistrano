@@ -16,8 +16,8 @@ module Slackistrano
       post_as_webhook(team: team, token: token, webhook: webhook, payload: payload)
     end
   rescue => e
-    error "There was an error notifying Slack."
-    error e.inspect
+    error("[slackistrano] Error notifying Slack!")
+    error("[slackistrano]   Error: #{e.inspect}")
   end
 
   #
