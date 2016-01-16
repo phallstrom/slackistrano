@@ -48,6 +48,4 @@ module Slackistrano
     Net::HTTP.post_form(uri, params)
   end
 
-
 end
-
