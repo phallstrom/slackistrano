@@ -1,6 +1,6 @@
 # Slackistrano Change Log
 
-UNRELEASED 1.1.0
+1.1.0
 -----
 
 - Honor Capistrano's `--dry-run` [#33]
