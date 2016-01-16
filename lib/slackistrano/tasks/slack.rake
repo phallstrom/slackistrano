@@ -12,23 +12,57 @@ namespace :slack do
       [attachments]
     end
 
+    def post_message(stage)
+      team = fetch(:slack_team)
+      token = fetch(:slack_token)
+      webhook = fetch(:slack_webhook)
+      via_slackbot = fetch(:slack_via_slackbot)
+      payload = make_payload(stage)
+      http_response = Slackistrano.post(team: team,
+                                        token: token,
+                                        webhook: webhook,
+                                        via_slackbot: via_slackbot,
+                                        payload: payload)
+      if http_response.code != '200'
+        error sprintf("[local] Failed slackistrano Slack API %s %s %s",
+                      http_response.uri,
+                      http_response.code,
+                      http_response.message)
+      end
+    end
+
+    def make_payload(stage)
+      payload = {
+        channel:  fetch(:slack_channel),
+        username: fetch(:slack_username),
+        icon_url: fetch(:slack_icon_url),
+        icon_emoji: fetch(:slack_icon_emoji),
+      }
+
+      stage_channel = "slack_channel_#{stage.to_s}".to_sym
+      if fetch(stage_channel)
+        payload[:channel] = fetch(stage_channel)
+      end
+
+      payload[:attachments] = case stage
+                            when :updated
+                              make_attachments(stage, color: 'good')
+                            when :reverted
+                              make_attachments(stage, color: '#4CBDEC')
+                            when :failed
+                              make_attachments(stage, color: 'danger')
+                            else
+                              make_attachments(stage)
+                            end
+
+      payload
+    end
+
     task :updating do
       set(:slack_deploy_or_rollback, 'deploy')
       if fetch(:slack_run_updating)
         run_locally do
-          Slackistrano.post(
-            team: fetch(:slack_team),
-            token: fetch(:slack_token),
-            webhook: fetch(:slack_webhook),
-            via_slackbot: fetch(:slack_via_slackbot),
-            payload: {
-              channel: fetch(:slack_channel_updating) || fetch(:slack_channel),
-              username: fetch(:slack_username),
-              icon_url: fetch(:slack_icon_url),
-              icon_emoji: fetch(:slack_icon_emoji),
-              attachments: make_attachments(:updating)
-            }
-          )
+          post_message(:updating)
         end
       end
     end
@@ -37,19 +71,7 @@ namespace :slack do
       set(:slack_deploy_or_rollback, 'rollback')
       if fetch(:slack_run_reverting)
         run_locally do
-          Slackistrano.post(
-            team: fetch(:slack_team),
-            token: fetch(:slack_token),
-            webhook: fetch(:slack_webhook),
-            via_slackbot: fetch(:slack_via_slackbot),
-            payload: {
-              channel: fetch(:slack_channel_reverting) || fetch(:slack_channel),
-              username: fetch(:slack_username),
-              icon_url: fetch(:slack_icon_url),
-              icon_emoji: fetch(:slack_icon_emoji),
-              attachments: make_attachments(:reverting)
-            }
-          )
+          post_message(:reverting)
         end
       end
     end
@@ -58,19 +80,7 @@ namespace :slack do
     task :updated do
       if fetch(:slack_run_updated)
         run_locally do
-          Slackistrano.post(
-            team: fetch(:slack_team),
-            token: fetch(:slack_token),
-            webhook: fetch(:slack_webhook),
-            via_slackbot: fetch(:slack_via_slackbot),
-            payload: {
-              channel: fetch(:slack_channel_updated) || fetch(:slack_channel),
-              username: fetch(:slack_username),
-              icon_url: fetch(:slack_icon_url),
-              icon_emoji: fetch(:slack_icon_emoji),
-              attachments: make_attachments(:updated, color: 'good')
-            }
-          )
+           post_message(:updated)
         end
       end
     end
@@ -78,19 +88,7 @@ namespace :slack do
     task :reverted do
       if fetch(:slack_run_reverted)
         run_locally do
-          Slackistrano.post(
-            team: fetch(:slack_team),
-            token: fetch(:slack_token),
-            webhook: fetch(:slack_webhook),
-            via_slackbot: fetch(:slack_via_slackbot),
-            payload: {
-              channel: fetch(:slack_channel_reverted) || fetch(:slack_channel),
-              username: fetch(:slack_username),
-              icon_url: fetch(:slack_icon_url),
-              icon_emoji: fetch(:slack_icon_emoji),
-              attachments: make_attachments(:reverted, color: '#4CBDEC')
-            }
-          )
+          post_message(:reverted)
         end
       end
     end
@@ -98,19 +96,7 @@ namespace :slack do
     task :failed do
       if fetch(:slack_run_failed)
         run_locally do
-          Slackistrano.post(
-            team: fetch(:slack_team),
-            token: fetch(:slack_token),
-            webhook: fetch(:slack_webhook),
-            via_slackbot: fetch(:slack_via_slackbot),
-            payload: {
-              channel: fetch(:slack_channel_failed) || fetch(:slack_channel),
-              username: fetch(:slack_username),
-              icon_url: fetch(:slack_icon_url),
-              icon_emoji: fetch(:slack_icon_emoji),
-              attachments: make_attachments(:failed, color: 'danger')
-            }
-          )
+          post_message(:failed)
         end
       end
     end

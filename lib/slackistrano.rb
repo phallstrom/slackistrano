@@ -16,8 +16,8 @@ module Slackistrano
       post_as_webhook(team: team, token: token, webhook: webhook, payload: payload)
     end
   rescue => e
-    puts "There was an error notifying Slack."
-    puts e.inspect
+    error "There was an error notifying Slack."
+    error e.inspect
   end
 
   #
@@ -29,7 +29,7 @@ module Slackistrano
     text = payload[:attachments].collect { |a| a[:text] }.join("\n")
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      http.request_post uri.request_uri, text
+      http.request_post uri, text
     end
   end
 
