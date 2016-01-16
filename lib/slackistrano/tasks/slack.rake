@@ -18,6 +18,19 @@ namespace :slack do
       webhook = fetch(:slack_webhook)
       via_slackbot = fetch(:slack_via_slackbot)
       payload = make_payload(stage)
+
+      # This is a nasty hack, but until Capistrano provides an official way to determine if
+      # --dry-run was passed this is the only option.
+      # See https://github.com/capistrano/capistrano/issues/1462
+      if Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+        info("[slackistrano] Slackistrano Dry Run:")
+        info("[slackistrano]   Team: #{team}")
+        info("[slackistrano]   Webhook: #{webhook}")
+        info("[slackistrano]   Via Slackbot: #{via_slackbot}")
+        info("[slackistrano]   Payload: #{payload.to_json}")
+        return
+      end
+
       http_response = Slackistrano.post(team: team,
                                         token: token,
                                         webhook: webhook,
