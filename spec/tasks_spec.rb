@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Slackistrano do
   before(:each) do
-    Rake::Task['load:defaults'].invoke
+    Rake::Task['load:defaults'].execute
   end
 
   describe "before/after hooks" do
@@ -43,6 +43,17 @@ describe Slackistrano do
       set "slack_run_#{stage}".to_sym, ->{ false }
       expect(Slackistrano).not_to receive(:post)
       Rake::Task["slack:deploy:#{stage}"].execute
+    end
+  end
+
+  context "when :slack_channel is an array" do
+    %w[updating reverting updated reverted failed].each do |stage|
+      it "posts to slack on slack:deploy:#{stage} in every channel" do
+        set "slack_channel".to_sym, ->{ %w[one two] }
+        set "slack_run_#{stage}".to_sym, ->{ true }
+        expect(Slackistrano).to receive(:post).twice.and_return(double(code: '200'))
+        Rake::Task["slack:deploy:#{stage}"].execute
+      end
     end
   end
 

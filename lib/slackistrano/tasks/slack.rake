@@ -15,16 +15,11 @@ namespace :slack do
 
     def make_payload(stage)
       payload = {
-        channel:  fetch(:slack_channel),
         username: fetch(:slack_username),
         icon_url: fetch(:slack_icon_url),
         icon_emoji: fetch(:slack_icon_emoji),
       }
 
-      stage_channel = "slack_channel_#{stage.to_s}".to_sym
-      if fetch(stage_channel)
-        payload[:channel] = fetch(stage_channel)
-      end
 
       payload[:attachments] = case stage
                             when :updated
@@ -47,30 +42,46 @@ namespace :slack do
       via_slackbot = fetch(:slack_via_slackbot)
       payload = make_payload(stage)
 
-      # This is a nasty hack, but until Capistrano provides an official way to determine if
-      # --dry-run was passed this is the only option.
-      # See https://github.com/capistrano/capistrano/issues/1462
-      if Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
-        info("[slackistrano] Slackistrano Dry Run:")
-        info("[slackistrano]   Team: #{team}")
-        info("[slackistrano]   Webhook: #{webhook}")
-        info("[slackistrano]   Via Slackbot: #{via_slackbot}")
-        info("[slackistrano]   Payload: #{payload.to_json}")
-        return
+      channels = fetch(:slack_channel)
+      stage_channel = "slack_channel_#{stage.to_s}".to_sym
+      if fetch(stage_channel)
+        channels = fetch(stage_channel)
+      end
+      channels = Array(channels)
+      if via_slackbot == false && channels.empty?
+        channels = [nil] # default webhook channel
       end
 
-      http_response = Slackistrano.post(team: team,
-                                        token: token,
-                                        webhook: webhook,
-                                        via_slackbot: via_slackbot,
-                                        payload: payload)
-      if http_response.code !~ /^2/
-        error("[slackistrano] Slack API Failure!")
-        error("[slackistrano]   URI: #{http_response.uri}")
-        error("[slackistrano]   Code: #{http_response.code}")
-        error("[slackistrano]   Message: #{http_response.message}")
-        error("[slackistrano]   Body: #{http_response.body}") if http_response.message != http_response.body
+      channels.each do |channel|
+        payload[:channel] = channel
+
+        # This is a nasty hack, but until Capistrano provides an official way to determine if
+        # --dry-run was passed this is the only option.
+        # See https://github.com/capistrano/capistrano/issues/1462
+        if Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+          info("[slackistrano] Slackistrano Dry Run:")
+          info("[slackistrano]   Team: #{team}")
+          info("[slackistrano]   Webhook: #{webhook}")
+          info("[slackistrano]   Via Slackbot: #{via_slackbot}")
+          info("[slackistrano]   Payload: #{payload.to_json}")
+
+        # Post to the channel.
+        else
+          http_response = Slackistrano.post(team: team,
+                                            token: token,
+                                            webhook: webhook,
+                                            via_slackbot: via_slackbot,
+                                            payload: payload)
+          if http_response.code !~ /^2/
+            error("[slackistrano] Slack API Failure!")
+            error("[slackistrano]   URI: #{http_response.uri}")
+            error("[slackistrano]   Code: #{http_response.code}")
+            error("[slackistrano]   Message: #{http_response.message}")
+            error("[slackistrano]   Body: #{http_response.body}") if http_response.message != http_response.body
+          end
+        end
       end
+
     end
 
     ######################################################################

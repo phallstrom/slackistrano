@@ -58,6 +58,13 @@ set :slack_token, "xxxxxxxxxxxxxxxxxxxxxxxx"
 set :slack_channel, '#general'
 ```
 
+You can set `:slack_channel` (or any of the `:slack_channel_xxxx` settings) to an array and Slackistrano
+will post to each channel. For example:
+
+```ruby
+set :slack_channel, ['#general', '#ops']
+```
+
 Optionally, override the other slack settings.
 
 ```ruby
