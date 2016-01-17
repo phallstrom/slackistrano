@@ -1,5 +1,12 @@
 # Slackistrano Change Log
 
+2.0.0
+-----
+
+- **BREAKING:** You must now `require 'slackistrano/capistrano'` in your Capfile.
+  Previously it was just `require 'slackistrano'`. It is also no longer necessary
+  to add `require: false` in your Gemfile, but it won't hurt to leave it.
+
 1.1.0
 -----
 

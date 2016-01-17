@@ -8,6 +8,11 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 If you need Capistrano v2 support, check out [capistrano-slack](https://github.com/j-mcnally/capistrano-slack).
 
+## NOTE: Upgrading from 1.x? Not Getting Notifications?
+
+Version 2.0 has changed how Slackistrano must be loaded in your Gemfile and Capfile. See the *Installation* section
+below current install.
+
 ## Requirements
 
 - Capistrano >= 3.1.0
@@ -19,7 +24,7 @@ If you need Capistrano v2 support, check out [capistrano-slack](https://github.c
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'slackistrano', require: false
+gem 'slackistrano'
 ```
 
 And then execute:
@@ -40,7 +45,7 @@ In both case, you need to enable the integration inside Slack and get the token 
 Require the library in your application's Capfile:
 
 ```ruby
-require 'slackistrano'
+require 'slackistrano/capistrano'
 ```
 
 If you post using *Incoming Webhooks* you need to set your webhook url in your application's config/deploy.rb:
