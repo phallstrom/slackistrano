@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+2.0.1
+-----
+
+- Internal code refactoring. No public facing changes.
+
 2.0.0
 -----
 

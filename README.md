@@ -184,7 +184,6 @@ you specified.
 ## TODO
 
 - Notify about incorrect configuration settings.
-- Notify about unsuccessfull HTTP POSTs.
 
 ## Contributing
 

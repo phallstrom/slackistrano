@@ -5,69 +5,19 @@ describe Slackistrano do
     Rake::Task['load:defaults'].execute
   end
 
-  describe "before/after hooks" do
-
-    it "invokes slack:deploy:updating before deploy:updating" do
-      expect(Rake::Task['deploy:updating'].prerequisites).to include 'slack:deploy:updating'
-    end
-
-    it "invokes slack:deploy:reverting before deploy:reverting" do
-      expect(Rake::Task['deploy:reverting'].prerequisites).to include 'slack:deploy:reverting'
-    end
-
-    it "invokes slack:deploy:updated after deploy:finishing" do
-      expect(Rake::Task['slack:deploy:updated']).to receive(:invoke)
-      Rake::Task['deploy:finishing'].execute
-    end
-
-    it "invokes slack:deploy:reverted after deploy:finishing_rollback" do
-      expect(Rake::Task['slack:deploy:reverted']).to receive(:invoke)
-      Rake::Task['deploy:finishing_rollback'].execute
-    end
-
-    it "invokes slack:deploy:failed after deploy:failed" do
-      expect(Rake::Task['slack:deploy:failed']).to receive(:invoke)
-      Rake::Task['deploy:failed'].execute
-    end
-
-  end
-
   %w[updating reverting updated reverted failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set "slack_run_#{stage}".to_sym, ->{ true }
-      expect(Slackistrano).to receive(:post).and_return(double(code: '200'))
+      expect_any_instance_of(Slackistrano::Capistrano).to receive(:post_to_slack).and_return(double(code: '200'))
       Rake::Task["slack:deploy:#{stage}"].execute
     end
 
     it "does not post to slack on slack:deploy:#{stage} when disabled" do
       set "slack_run_#{stage}".to_sym, ->{ false }
-      expect(Slackistrano).not_to receive(:post)
+      expect_any_instance_of(Slackistrano::Capistrano).not_to receive(:post_to_slack)
       Rake::Task["slack:deploy:#{stage}"].execute
     end
   end
-
-  context "when :slack_channel is an array" do
-    %w[updating reverting updated reverted failed].each do |stage|
-      it "posts to slack on slack:deploy:#{stage} in every channel" do
-        set "slack_channel".to_sym, ->{ %w[one two] }
-        set "slack_run_#{stage}".to_sym, ->{ true }
-        expect(Slackistrano).to receive(:post).twice.and_return(double(code: '200'))
-        Rake::Task["slack:deploy:#{stage}"].execute
-      end
-    end
-  end
-
-  context "when --dry-run is passed" do
-    %w[updating reverting updated reverted failed].each do |stage|
-      it "does not post to slack on slack:deploy:#{stage}" do
-        set "slack_run_#{stage}".to_sym, ->{ true }
-        expect(Capistrano::Configuration.env.send(:config)).to receive(:[]).with(:sshkit_backend).and_return(SSHKit::Backend::Printer)
-        expect(Slackistrano).not_to receive(:post)
-        Rake::Task["slack:deploy:#{stage}"].execute
-      end
-    end
-  end
-
 
   [ # stage, color, channel
     ['updating', nil, nil],
@@ -81,7 +31,7 @@ describe Slackistrano do
     ['failed', 'danger', 'failed_channel'],
   ].each do |stage, color, channel_for_stage|
 
-    it "calls Slackistrano.post with the right arguments for stage=#{stage}, color=#{color}, channel_for_stage=#{channel_for_stage}" do
+    it "calls post_as_slack with the right arguments for stage=#{stage}, color=#{color}, channel_for_stage=#{channel_for_stage}" do
       set :"slack_run_#{stage}", -> { true }
       set :slack_team,           -> { 'team' }
       set :slack_token,          -> { 'token' }
@@ -102,7 +52,7 @@ describe Slackistrano do
         mrkdwn_in: [:text, :pretext]
       }.reject{|k,v| v.nil?}
 
-      expect(Slackistrano).to receive(:post).with(
+      expect_any_instance_of(Slackistrano::Capistrano).to receive(:post_to_slack).with(
         team: 'team',
         token: 'token',
         webhook: 'webhook',
@@ -118,6 +68,5 @@ describe Slackistrano do
       Rake::Task["slack:deploy:#{stage}"].execute
     end
   end
-
 
 end
