@@ -21,7 +21,8 @@ module Slackistrano
     #
     #
     def run(action)
-      should_run = fetch("slack_run_#{action}".to_sym)
+      should_run = fetch("slack_run".to_sym)
+      should_run &&= fetch("slack_run_#{action}".to_sym)
       return unless should_run
 
       _self = self

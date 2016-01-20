@@ -83,6 +83,7 @@ set :slack_icon_url,           -> { 'http://gravatar.com/avatar/885e1c523b7975c4
 set :slack_icon_emoji,         -> { nil } # Emoji to use. Overrides icon_url. Must be a string (ex: ':shipit:')
 set :slack_username,           -> { 'Slackistrano' }
 
+set :slack_run,                -> { true } # Set to false to disable all messages.
 set :slack_run_updating,       -> { true } # Set to false to disable deploy starting message.
 set :slack_run_reverting,      -> { true } # Set to false to disable rollback starting message.
 set :slack_run_updated,        -> { true } # Set to false to disable deploy finished message.

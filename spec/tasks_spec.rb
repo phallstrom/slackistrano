@@ -17,6 +17,13 @@ describe Slackistrano do
       expect_any_instance_of(Slackistrano::Capistrano).not_to receive(:post_to_slack)
       Rake::Task["slack:deploy:#{stage}"].execute
     end
+
+    it "does not post to slack on slack:deploy:#{stage} when disabled globally" do
+      set "slack_run".to_sym, ->{ false }
+      set "slack_run_#{stage}".to_sym, ->{ true }
+      expect_any_instance_of(Slackistrano::Capistrano).not_to receive(:post_to_slack)
+      Rake::Task["slack:deploy:#{stage}"].execute
+    end
   end
 
   [ # stage, color, channel
