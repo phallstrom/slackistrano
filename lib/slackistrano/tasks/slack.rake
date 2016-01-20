@@ -94,5 +94,13 @@ namespace :load do
     set :slack_pretext_reverted,   -> { nil }
     set :slack_pretext_failed,     -> { nil }
 
+    set :slack_time_elapsed_enabled, false
+    set :slack_start_time,           Time.now
+    set :slack_time_elapsed, -> {
+      Time.now.to_i - fetch(:slack_start_time).to_i
+    }
+    set :slack_time_elapsed_field, -> {
+      { title: 'Time elapsed (sec)', value: fetch(:slack_time_elapsed) }
+    }
   end
 end

@@ -177,6 +177,13 @@ It will produce the following format:
 
 More information: [https://api.slack.com/docs/attachments](https://api.slack.com/docs/attachments)
 
+To add time elapsed to the `slack_fields_updated` an option can be set
+(not enabled per default):
+
+```
+set :slack_time_elapsed_enabled, true
+```
+
 ## Usage
 
 Deploy your application like normal and you should see messages in the channel
