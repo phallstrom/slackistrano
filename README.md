@@ -146,24 +146,24 @@ set :slack_msg_updated, nil
 set :slack_fallback_updated, "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}"
 set :slack_fields_updated, [
   {
-    "title": "Project",
-    "value": "<https://github.com/XXXXX/#{fetch(:application)}|#{fetch(:application)}>",
-    "short": true
+    title: "Project",
+    value: "<https://github.com/XXXXX/#{fetch(:application)}|#{fetch(:application)}>",
+    short: true
   },
   {
-    "title": "Environment",
-    "value": fetch(:stage),
-    "short": true
+    title: "Environment",
+    value: fetch(:stage),
+    short: true
   },
   {
-    "title": "Deployer",
-    "value": fetch(:slack_deploy_user),
-    "short": true
+    title: "Deployer",
+    value: fetch(:slack_deploy_user),
+    short: true
   },
   {
-    "title": "Revision",
-    "value": "<https://github.com/XXXXX/#{fetch(:application)}/commit/#{fetch(:slack_revision)}|#{fetch(:slack_revision)[0..6]}>",
-    "short": true
+    title: "Revision",
+    value: "<https://github.com/XXXXX/#{fetch(:application)}/commit/#{fetch(:slack_revision)}|#{fetch(:slack_revision)[0..6]}>",
+    short: true
   }
 ]
 ```
