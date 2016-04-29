@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.0.0
+-----
+
+- Require version 3.5.0 of Capistrano and utilize it's new dry-run functionality.
+
 2.0.1
 -----
 

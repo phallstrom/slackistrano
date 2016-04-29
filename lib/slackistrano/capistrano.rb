@@ -67,10 +67,13 @@ module Slackistrano
       channels.each do |channel|
         payload[:channel] = channel
 
-        # This is a nasty hack, but until Capistrano provides an official way to determine if
-        # --dry-run was passed this is the only option.
-        # See https://github.com/capistrano/capistrano/issues/1462
-        if ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+        dry_run = if ::Capistrano::Configuration.respond_to?(:dry_run?) 
+                    ::Capistrano::Configuration.dry_run?
+                  else
+                    ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+                  end
+
+        if dry_run
           backend.info("[slackistrano] Slackistrano Dry Run:")
           backend.info("[slackistrano]   Team: #{team}")
           backend.info("[slackistrano]   Webhook: #{webhook}")
