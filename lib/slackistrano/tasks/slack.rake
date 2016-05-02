@@ -49,7 +49,7 @@ namespace :load do
     set :slack_channel_reverted,   -> { nil } # Channel to post to. Defaults to :slack_channel.
     set :slack_channel_failed,     -> { nil } # Channel to post to. Defaults to :slack_channel.
 
-    set :slack_icon_url,           -> { 'http://gravatar.com/avatar/885e1c523b7975c4003de162d8ee8fee?r=g&s=40' }
+    set :slack_icon_url,           -> { 'https://raw.githubusercontent.com/phallstrom/slackistrano/master/slackistrano.png' }
     set :slack_icon_emoji,         -> { nil } # Emoji to use. Overrides icon_url. Must be a string (ex: ':shipit:')
     set :slack_username,           -> { 'Slackistrano' }
 
