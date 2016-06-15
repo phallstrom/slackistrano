@@ -143,29 +143,31 @@ Slack allows you to send complex content, composed by fields. You can use the `f
 ```ruby
 set :slack_revision, `git rev-parse origin/#{fetch(:branch)}`.strip!
 set :slack_msg_updated, nil
-set :slack_fallback_updated, "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}"
-set :slack_fields_updated, [
-  {
-    title: "Project",
-    value: "<https://github.com/XXXXX/#{fetch(:application)}|#{fetch(:application)}>",
-    short: true
-  },
-  {
-    title: "Environment",
-    value: fetch(:stage),
-    short: true
-  },
-  {
-    title: "Deployer",
-    value: fetch(:slack_deploy_user),
-    short: true
-  },
-  {
-    title: "Revision",
-    value: "<https://github.com/XXXXX/#{fetch(:application)}/commit/#{fetch(:slack_revision)}|#{fetch(:slack_revision)[0..6]}>",
-    short: true
-  }
-]
+set :slack_fallback_updated, -> { "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}" }
+set :slack_fields_updated, lambda {
+  [
+    {
+      title: "Project",
+      value: "<https://github.com/XXXXX/#{fetch(:application)}|#{fetch(:application)}>",
+      short: true
+    },
+    {
+      title: "Environment",
+      value: fetch(:stage),
+      short: true
+    },
+    {
+      title: "Deployer",
+      value: fetch(:slack_deploy_user),
+      short: true
+    },
+    {
+      title: "Revision",
+      value: "<https://github.com/XXXXX/#{fetch(:application)}/commit/#{fetch(:slack_revision)}|#{fetch(:slack_revision)[0..6]}>",
+      short: true
+    }
+  ]
+}
 ```
 
 It will produce the following format:
@@ -175,7 +177,9 @@ It will produce the following format:
 
 **Note 2:** *The `fields` configuration requires you to use webhooks.*
 
-More information: [https://api.slack.com/docs/attachments](https://api.slack.com/docs/attachments)
+**Note 3:** *This example shows how the `branch` value may be lazily loaded from each `stage`.*
+
+More information: [https://api.slack.com/docs/attachments](https://api.slack.com/docs/attachments) and [http://capistranorb.com/documentation/faq/how-can-i-access-stage-configuration-variables/](http://capistranorb.com/documentation/faq/how-can-i-access-stage-configuration-variables/)
 
 ## Usage
 
