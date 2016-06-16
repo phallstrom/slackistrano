@@ -141,10 +141,10 @@ $ cap production slack:deploy:failed
 Slack allows you to send complex content, composed by fields. You can use the `fields` and `fallback` variables in order to have a well formatted message as follows:
 
 ```ruby
-set :slack_revision, `git rev-parse origin/#{fetch(:branch)}`.strip!
+set :slack_revision, -> `git rev-parse origin/#{fetch(:branch)}`.strip!
 set :slack_msg_updated, nil
-set :slack_fallback_updated, -> { "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}" }
-set :slack_fields_updated, lambda {
+set :slack_fallback_updated, { "#{fetch(:slack_deploy_user)} deployed #{fetch(:application)} on #{fetch(:stage)}" }
+set :slack_fields_updated, {
   [
     {
       title: "Project",
