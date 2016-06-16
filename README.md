@@ -177,7 +177,7 @@ It will produce the following format:
 
 **Note 2:** *The `fields` configuration requires you to use webhooks.*
 
-**Note 3:** *This example shows how the `branch` value may be lazily loaded from each `stage`.*
+**Note 3:** *Stages may contain different values for a symbol, e.g. `config/deploy/stage1.rb` may contain `set :branch, 'my-branch'`, and `config/deploy/stage2.rb` contains `set :branch, 'another-branch'`. The example above shows how the `:branch` value is properly loaded from each stage within the `config/deploy.rb` file.*
 
 More information: [https://api.slack.com/docs/attachments](https://api.slack.com/docs/attachments) and [http://capistranorb.com/documentation/faq/how-can-i-access-stage-configuration-variables/](http://capistranorb.com/documentation/faq/how-can-i-access-stage-configuration-variables/)
 
