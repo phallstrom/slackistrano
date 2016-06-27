@@ -119,6 +119,9 @@ module Slackistrano
         fallback:   fetch(:"slack_fallback_#{action}"),
         mrkdwn_in:  [:text, :pretext]
       }).reject{|k, v| v.nil? }
+      if fetch(:slack_time_elapsed_enabled) && action == :updated
+        attachments[:fields] << fetch(:slack_time_elapsed_field)
+      end
       [attachments]
     end
     private :make_attachments
