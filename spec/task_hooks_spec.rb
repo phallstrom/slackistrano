@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Slackistrano do
-  before(:each) do
-    Rake::Task['load:defaults'].execute
-  end
 
   describe "before/after hooks" do
 
@@ -30,6 +27,9 @@ describe Slackistrano do
       Rake::Task['deploy:failed'].execute
     end
 
+    it "invokes all slack:deploy tasks before slack:deploy:test" do
+      expect(Rake::Task['slack:deploy:test'].prerequisites).to match %w[updating updated reverting reverted failed]
+    end
   end
 
 end
