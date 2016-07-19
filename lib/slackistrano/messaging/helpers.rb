@@ -16,6 +16,15 @@ module Slackistrano
         fetch(:stage, default)
       end
 
+      # 
+      # Return the elapsed running time as a string.
+      #
+      # Examples: 21-18:26:30, 15:28:37, 01:14
+      #
+      def elapsed_time
+        `ps -p #{$$} -o etime=`.strip
+      end
+
     end
   end
 end
