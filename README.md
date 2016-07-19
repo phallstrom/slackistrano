@@ -22,11 +22,15 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 2. Execute:
 
-       $ bundle
+   ```
+   $ bundle
+   ```
 
 3. Require the library in your application's Capfile:
 
-       require 'slackistrano/capistrano'
+   ```
+   require 'slackistrano/capistrano'
+   ```
 
 ## Configuration
 
@@ -42,28 +46,34 @@ You have two options to notify a channel in Slack when you deploy:
 1. Configure your Slack's Incoming Webhook.
 2. Add the following to `config/deploy.rb`:
 
-       set :slackistrano, {
-         channel: '#your-channel',
-         webhook: 'your-incoming-webhook-url'
-       }
+   ```
+   set :slackistrano, {
+     channel: '#your-channel',
+     webhook: 'your-incoming-webhook-url'
+   }
+   ```
 
 ### Slackbot
 
 1. Configure your Slack's Slackbot (not Bot).
 2. Add the following to `config/deploy.rb`:
 
-       set :slackistrano, {
-         channel: '#your-channel',
-         team: 'your-team-name',
-         token: 'your-token'
-       }
+   ```
+   set :slackistrano, {
+     channel: '#your-channel',
+     team: 'your-team-name',
+     token: 'your-token'
+   }
+   ```
 
 ### Test your Configuration
 
 Test your setup by running the following command. This will post each stage's
 message to Slack in turn.
 
-    $ cap production slack:deploy:test
+```
+$ cap production slack:deploy:test
+```
 
 ## Usage
 
