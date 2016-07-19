@@ -6,12 +6,9 @@
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
-If you need Capistrano v2 support, check out [capistrano-slack](https://github.com/j-mcnally/capistrano-slack).
+## HEADS UP! New Version is Coming Soon!
 
-## NOTE: Upgrading from 1.x? Not Getting Notifications?
-
-Version 2.0 has changed how Slackistrano must be loaded in your Gemfile and Capfile. See the *Installation* section
-below current install.
+I'm working on a new version that should give you much more flexibility in message formatting. Work is happening on the [overhaul branch](https://github.com/phallstrom/slackistrano/tree/overhaul). Would love to get some feedback. It should work as-is with your current configuration too (would also love to know if it doesn't).  *– July 18th, 2016*
 
 ## Requirements
 
