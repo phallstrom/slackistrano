@@ -1,4 +1,4 @@
-# Slackistrano
+aaa# Slackistrano
 
 [![Gem Version](https://badge.fury.io/rb/slackistrano.png)](http://badge.fury.io/rb/slackistrano)
 [![Code Climate](https://codeclimate.com/github/phallstrom/slackistrano.png)](https://codeclimate.com/github/phallstrom/slackistrano)
@@ -16,7 +16,9 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 1. Add this line to your application's Gemfile:
 
-       gem 'slackistrano'
+   ```
+   gem 'slackistrano'
+   ```
 
 2. Execute:
 
