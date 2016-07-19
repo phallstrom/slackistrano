@@ -16,15 +16,15 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 1. Add this line to your application's Gemfile:
 
-    gem 'slackistrano'
+      gem 'slackistrano'
 
 2. Execute:
 
-    $ bundle
+      $ bundle
 
 3. Require the library in your application's Capfile:
 
-    require 'slackistrano/capistrano'
+      require 'slackistrano/capistrano'
 
 ## Configuration
 
@@ -40,21 +40,21 @@ You have two options to notify a channel in Slack when you deploy:
 1. Configure your Slack's Incoming Webhook.
 2. Add the following to `config/deploy.rb`:
 
-       set :slackistrano, {
-         channel: '#your-channel',
-         webhook: 'your-incoming-webhook-url'
-       }
+      set :slackistrano, {
+        channel: '#your-channel',
+        webhook: 'your-incoming-webhook-url'
+      }
 
 ### Slackbot
 
 1. Configure your Slack's Slackbot (not Bot).
 2. Add the following to `config/deploy.rb`:
 
-       set :slackistrano, {
-         channel: '#your-channel',
-         team: 'your-team-name',
-         token: 'your-token'
-       }
+      set :slackistrano, {
+        channel: '#your-channel',
+        team: 'your-team-name',
+        token: 'your-token'
+      }
 
 ### Test your Configuration
 
