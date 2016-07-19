@@ -12,7 +12,7 @@ module Slackistrano
 
       attr_reader :team, :token, :webhook
 
-      def initialize(env:, team: nil, channel: nil, token: nil, webhook: nil, run: true)
+      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil, run: true)
         @env = env
         @team = team
         @channel = channel

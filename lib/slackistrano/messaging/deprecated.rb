@@ -2,7 +2,7 @@ module Slackistrano
   module Messaging
     class Deprecated < Base
 
-      def initialize(env:, team: nil, channel: nil, token: nil, webhook: nil, run: true)
+      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil, run: true)
         run_locally do
           warn("[slackistrano] You are using an outdated configuration that will be removed soon.")
           warn("[slackistrano] Please upgrade soon! <https://github.com/phallstrom/slackistrano>")
