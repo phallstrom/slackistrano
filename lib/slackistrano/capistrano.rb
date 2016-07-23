@@ -42,49 +42,31 @@ module Slackistrano
       payload = @messaging.payload_for(action)
       return if payload.nil?
 
-      channels = Array(@messaging.channels_for(action))
-      if !@messaging.via_slackbot? == false && channels.empty?
-        channels = [nil] # default webhook channel
-      end
-
       payload = {
         username: @messaging.username,
         icon_url: @messaging.icon_url,
         icon_emoji: @messaging.icon_emoji,
       }.merge(payload)
 
+      channels = Array(@messaging.channels_for(action))
+      if !@messaging.via_slackbot? == false && channels.empty?
+        channels = [nil] # default webhook channel
+      end
+
       channels.each do |channel|
-        payload[:channel] = channel
-        if dry_run?
-          post_dry_run(payload)
-        else
-          post(payload)
-        end
+        post(payload.merge(channel: channel))
       end
     end
 
     private ##################################################
 
-    def dry_run?
-      if ::Capistrano::Configuration.respond_to?(:dry_run?)
-        ::Capistrano::Configuration.dry_run?
-      else
-        ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
-      end
-    end
-
-    def post_dry_run(payload)
-        backend.info("[slackistrano] Slackistrano Dry Run:")
-      if @messaging.via_slackbot?
-        backend.info("[slackistrano]   Team: #{@messaging.team}")
-        backend.info("[slackistrano]   Token: #{@messaging.token}")
-      else
-        backend.info("[slackistrano]   Webhook: #{@messaging.webhook}")
-      end
-        backend.info("[slackistrano]   Payload: #{payload.to_json}")
-    end
-
     def post(payload)
+
+      if dry_run?
+        post_dry_run(payload)
+        return
+      end
+
       begin
         response = post_to_slack(payload)
       rescue => e
@@ -121,6 +103,25 @@ module Slackistrano
       params = {'payload' => payload.to_json}
       uri = URI(@messaging.webhook)
       Net::HTTP.post_form(uri, params)
+    end
+
+    def dry_run?
+      if ::Capistrano::Configuration.respond_to?(:dry_run?)
+        ::Capistrano::Configuration.dry_run?
+      else
+        ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+      end
+    end
+
+    def post_dry_run(payload)
+        backend.info("[slackistrano] Slackistrano Dry Run:")
+      if @messaging.via_slackbot?
+        backend.info("[slackistrano]   Team: #{@messaging.team}")
+        backend.info("[slackistrano]   Token: #{@messaging.token}")
+      else
+        backend.info("[slackistrano]   Webhook: #{@messaging.webhook}")
+      end
+        backend.info("[slackistrano]   Payload: #{payload.to_json}")
     end
 
   end
