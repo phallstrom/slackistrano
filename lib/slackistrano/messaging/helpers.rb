@@ -3,7 +3,7 @@ module Slackistrano
     module Helpers
 
       def icon_url
-        'https://raw.githubusercontent.com/phallstrom/slackistrano/master/slackistrano.png'
+        'https://raw.githubusercontent.com/phallstrom/slackistrano/master/images/slackistrano.png'
       end
 
       def icon_emoji
