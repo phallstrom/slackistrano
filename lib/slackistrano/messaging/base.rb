@@ -12,13 +12,12 @@ module Slackistrano
 
       attr_reader :team, :token, :webhook
 
-      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil, run: true)
+      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil)
         @env = env
         @team = team
         @channel = channel
         @token = token
         @webhook = webhook
-        @run = run
       end
 
       def icon_url
@@ -69,10 +68,6 @@ module Slackistrano
 
       def channels_for(action)
         @channel
-      end
-
-      def should_run_for?(action)
-        @run
       end
 
       ################################################################################

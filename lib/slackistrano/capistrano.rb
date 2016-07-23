@@ -23,8 +23,7 @@ module Slackistrano
                        team: fetch(:slack_team),
                        channel: fetch(:slack_channel),
                        token: fetch(:slack_token),
-                       webhook: fetch(:slack_webhook),
-                       run: fetch(:slack_run, true)
+                       webhook: fetch(:slack_webhook)
                      )
                    else
                      klass = opts.delete(:klass) || Messaging::Default
@@ -33,13 +32,15 @@ module Slackistrano
     end
 
     def run(action)
-      return unless @messaging.should_run_for?(action)
       _self = self
       run_locally { _self.process(action, self) }
     end
 
     def process(action, backend)
       @backend = backend
+
+      payload = @messaging.message_for(action)
+      return if payload.nil?
 
       channels = Array(@messaging.channels_for(action))
       if !@messaging.via_slackbot? == false && channels.empty?
@@ -50,7 +51,7 @@ module Slackistrano
         username: @messaging.username,
         icon_url: @messaging.icon_url,
         icon_emoji: @messaging.icon_emoji,
-      }.merge(@messaging.message_for(action))
+      }.merge(payload)
 
       channels.each do |channel|
         payload[:channel] = channel

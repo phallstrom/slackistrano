@@ -2,7 +2,7 @@ module Slackistrano
   module Messaging
     class Deprecated < Base
 
-      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil, run: true)
+      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil)
         run_locally do
           warn("[slackistrano] You are using an outdated configuration that will be removed soon.")
           warn("[slackistrano] Please upgrade soon! <https://github.com/phallstrom/slackistrano>")
@@ -31,10 +31,6 @@ module Slackistrano
         fetch("slack_channel_#{action}".to_sym) || super
       end
 
-      def should_run_for?(action)
-        super && fetch("slack_run_#{action}".to_sym, true)
-      end
-
       def message_for_updating
         make_message(__method__, super)
       end
@@ -59,6 +55,9 @@ module Slackistrano
 
       def make_message(method, options={})
         action = method.to_s.sub('message_for_', '')
+
+        return nil unless fetch("slack_run".to_sym, true) && fetch("slack_run_#{action}".to_sym, true)
+
         attachment = options.merge({
           title:      fetch(:"slack_title_#{action}"),
           pretext:    fetch(:"slack_pretext_#{action}"),

@@ -42,10 +42,6 @@ module Slackistrano
         super
       end
 
-      def should_run_for?(action)
-        super
-      end
-
     end
   end
 end
