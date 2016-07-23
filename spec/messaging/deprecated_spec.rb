@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Slackistrano do
+describe Slackistrano::Messaging::Deprecated do
   before(:each) do
     set :slackistrano, {}
   end
