@@ -2,7 +2,21 @@ module Slackistrano
   module Messaging
     module Helpers
 
-      protected
+      def icon_url
+        'https://raw.githubusercontent.com/phallstrom/slackistrano/master/slackistrano.png'
+      end
+
+      def icon_emoji
+        nil
+      end
+
+      def username
+        'Slackistrano'
+      end
+
+      def deployer
+        ENV['USER'] || ENV['USERNAME']
+      end
 
       def branch
         fetch(:branch)
@@ -16,7 +30,7 @@ module Slackistrano
         fetch(:stage, default)
       end
 
-      # 
+      #
       # Return the elapsed running time as a string.
       #
       # Examples: 21-18:26:30, 15:28:37, 01:14

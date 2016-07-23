@@ -20,22 +20,6 @@ module Slackistrano
         @webhook = webhook
       end
 
-      def icon_url
-        'https://raw.githubusercontent.com/phallstrom/slackistrano/master/slackistrano.png'
-      end
-
-      def icon_emoji
-        nil
-      end
-
-      def username
-        'Slackistrano'
-      end
-
-      def deployer
-        ENV['USER'] || ENV['USERNAME']
-      end
-
       def payload_for_updating
         {
           text: "#{deployer} has started deploying branch #{branch} of #{application} to #{stage}"

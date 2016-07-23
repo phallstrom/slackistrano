@@ -2,22 +2,6 @@ module Slackistrano
   module Messaging
     class Default < Base
 
-      def icon_url
-        super
-      end
-
-      def icon_emoji
-        super
-      end
-
-      def username
-        super
-      end
-
-      def deployer
-        super
-      end
-
       def payload_for_updating
         super
       end
