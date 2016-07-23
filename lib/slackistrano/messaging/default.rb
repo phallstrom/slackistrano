@@ -11,7 +11,6 @@ module Slackistrano
       end
 
       def payload_for_updated
-        binding.pry
         super
       end
 
