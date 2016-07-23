@@ -39,7 +39,7 @@ module Slackistrano
     def process(action, backend)
       @backend = backend
 
-      payload = @messaging.message_for(action)
+      payload = @messaging.payload_for(action)
       return if payload.nil?
 
       channels = Array(@messaging.channels_for(action))

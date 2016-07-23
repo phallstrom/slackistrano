@@ -18,23 +18,23 @@ module Slackistrano
         super
       end
 
-      def message_for_updating
+      def payload_for_updating
         super
       end
 
-      def message_for_reverting
+      def payload_for_reverting
         super
       end
 
-      def message_for_updated
+      def payload_for_updated
         super
       end
 
-      def message_for_reverted
+      def payload_for_reverted
         super
       end
 
-      def message_for_failed
+      def payload_for_failed
         super
       end
 

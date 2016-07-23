@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class NilPayloadMessaging < Slackistrano::Messaging::Default
-  def message_for_updating
+  def payload_for_updating
     nil
   end
 end

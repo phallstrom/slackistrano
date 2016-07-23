@@ -31,30 +31,30 @@ module Slackistrano
         fetch("slack_channel_#{action}".to_sym) || super
       end
 
-      def message_for_updating
+      def payload_for_updating
         make_message(__method__, super)
       end
 
-      def message_for_reverting
+      def payload_for_reverting
         make_message(__method__, super)
       end
 
-      def message_for_updated
+      def payload_for_updated
         make_message(__method__, super.merge(color: 'good'))
       end
 
-      def message_for_reverted
+      def payload_for_reverted
         make_message(__method__, super.merge(color: 'warning'))
       end
 
-      def message_for_failed
+      def payload_for_failed
         make_message(__method__, super.merge(color: 'danger'))
       end
 
       private ##################################################
 
       def make_message(method, options={})
-        action = method.to_s.sub('message_for_', '')
+        action = method.to_s.sub('payload_for_', '')
 
         return nil unless fetch("slack_run".to_sym, true) && fetch("slack_run_#{action}".to_sym, true)
 

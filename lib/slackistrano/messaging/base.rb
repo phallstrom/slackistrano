@@ -36,31 +36,31 @@ module Slackistrano
         ENV['USER'] || ENV['USERNAME']
       end
 
-      def message_for_updating
+      def payload_for_updating
         {
           text: "#{deployer} has started deploying branch #{branch} of #{application} to #{stage}"
         }
       end
 
-      def message_for_reverting
+      def payload_for_reverting
         {
           text: "#{deployer} has started rolling back branch #{branch} of #{application} to #{stage}"
         }
       end
 
-      def message_for_updated
+      def payload_for_updated
         {
           text: "#{deployer} has finished deploying branch #{branch} of #{application} to #{stage}"
         }
       end
 
-      def message_for_reverted
+      def payload_for_reverted
         {
           text: "#{deployer} has finished rolling back branch of #{application} to #{stage}"
         }
       end
 
-      def message_for_failed
+      def payload_for_failed
         {
           text: "#{deployer} has failed to #{deploying? ? 'deploy' : 'rollback'} branch #{branch} of #{application} to #{stage}"
         }
@@ -72,8 +72,8 @@ module Slackistrano
 
       ################################################################################
 
-      def message_for(action)
-        method = "message_for_#{action}"
+      def payload_for(action)
+        method = "payload_for_#{action}"
         respond_to?(method) && send(method)
       end
 
