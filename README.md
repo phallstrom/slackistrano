@@ -173,6 +173,10 @@ To set this up:
    }
    ```
 
+4. If you come up with something that you think others would enjoy submit it as
+   an issue along with a screenshot of the output from `cap production
+   slack:deploy:test` and I'll add it to the Wiki.
+
 ## TODO
 
 - Notify about incorrect configuration settings.
