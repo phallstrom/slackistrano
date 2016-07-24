@@ -19,7 +19,7 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 1. Add this line to your application's Gemfile:
 
    ```ruby
-   gem 'slackistrano'
+   gem 'slackistrano', '3.1.0.beta'
    ```
 
 2. Execute:
