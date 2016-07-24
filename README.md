@@ -16,7 +16,7 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 1. Add this line to your application's Gemfile:
 
-   ```
+   ```ruby
    gem 'slackistrano'
    ```
 
@@ -28,7 +28,7 @@ Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.c
 
 3. Require the library in your application's Capfile:
 
-   ```
+   ```ruby
    require 'slackistrano/capistrano'
    ```
 
@@ -46,7 +46,7 @@ You have two options to notify a channel in Slack when you deploy:
 1. Configure your Slack's Incoming Webhook.
 2. Add the following to `config/deploy.rb`:
 
-   ```
+   ```ruby
    set :slackistrano, {
      channel: '#your-channel',
      webhook: 'your-incoming-webhook-url'
@@ -58,7 +58,7 @@ You have two options to notify a channel in Slack when you deploy:
 1. Configure your Slack's Slackbot (not Bot).
 2. Add the following to `config/deploy.rb`:
 
-   ```
+   ```ruby
    set :slackistrano, {
      channel: '#your-channel',
      team: 'your-team-name',
@@ -85,7 +85,7 @@ you specified.
 You can customize the messaging posted to Slack by providing your own messaging
 class and overriding several methods. Here is one example:
 
-```
+```ruby
 module Slackistrano
   class CustomMessaging < Messaging::Base
 
@@ -159,13 +159,13 @@ To set this up:
 
 2. Require the library after the requiring of Slackistrano in your application's Capfile.
 
-   ```
+   ```ruby
    require_relative 'lib/custom_messaging'
    ```
 
 3. Update the `slackistrano` configuration in `config/deploy.rb` and add the `klass` option.
 
-   ```
+   ```ruby
    set :slackistrano, {
      klass: Slackistrano::CustomMessaging,
      channel: '#your-channel',
