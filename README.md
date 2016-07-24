@@ -6,7 +6,7 @@
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
-_NOTE:_ This README documents version 3.1.0.beta. You can read about 3.0.1 [here](https://github.com/phallstrom/slackistrano/tree/v3.0.1).
+**NOTE:** This README documents version 3.1.0.beta. You can read about 3.0.1 [here](https://github.com/phallstrom/slackistrano/tree/v3.0.1).
 
 ## Requirements
 
