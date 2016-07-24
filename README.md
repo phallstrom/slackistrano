@@ -1,4 +1,4 @@
-aaa# Slackistrano
+# Slackistrano
 
 [![Gem Version](https://badge.fury.io/rb/slackistrano.png)](http://badge.fury.io/rb/slackistrano)
 [![Code Climate](https://codeclimate.com/github/phallstrom/slackistrano.png)](https://codeclimate.com/github/phallstrom/slackistrano)
@@ -151,15 +151,27 @@ end
 ```
 
 The output would look like this:
-![Custom Messaging](https://raw.githubusercontent.com/phallstrom/slackistrano/overhaul/images/custom_messaging.png)
+![Custom Messaging](https://raw.githubusercontent.com/phallstrom/slackistrano/overhaul/images/custom_messaging.jpg)
 
 To set this up:
 
-1. Add the above class to say `lib/custom_messaging.rb`.
+1. Add the above class to your app, for example `lib/custom_messaging.rb`.
 
-2. Add `require_relative 'lib/custom_messaging'` after the requiring of Slackistrano in your `Capfile`.
+2. Require the library after the requiring of Slackistrano in your application's Capfile.
 
-3. Add `klass: Slackistrano::CustomMessaging` to the `slackistrano` configuration in `config/deploy.rb`.  
+   ```
+   require_relative 'lib/custom_messaging'
+   ```
+
+3. Update the `slackistrano` configuration in `config/deploy.rb` and add the `klass` option.
+
+   ```
+   set :slackistrano, {
+     klass: Slackistrano::CustomMessaging,
+     channel: '#your-channel',
+     webhook: 'your-incoming-webhook-url'
+   }
+   ```
 
 ## TODO
 
