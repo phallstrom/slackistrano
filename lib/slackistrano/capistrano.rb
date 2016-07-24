@@ -1,3 +1,4 @@
+require_relative 'messaging/base'
 require 'net/http'
 require 'json'
 require 'forwardable'
@@ -7,163 +8,121 @@ load File.expand_path("../tasks/slack.rake", __FILE__)
 module Slackistrano
   class Capistrano
 
+    attr_reader :backend
+    private :backend
+
     extend Forwardable
     def_delegators :env, :fetch, :run_locally
 
-    #
-    #
-    #
     def initialize(env)
       @env = env
+      opts = fetch(:slackistrano, {}).dup
+      @messaging = if opts.empty?
+                     klass = Messaging::Deprecated.new(
+                       env: @env,
+                       team: fetch(:slack_team),
+                       channel: fetch(:slack_channel),
+                       token: fetch(:slack_token),
+                       webhook: fetch(:slack_webhook)
+                     )
+                   else
+                     klass = opts.delete(:klass) || Messaging::Default
+                     klass.new(opts.merge(env: @env))
+                   end
     end
 
-    #
-    #
-    #
     def run(action)
-      should_run = fetch("slack_run".to_sym)
-      should_run &&= fetch("slack_run_#{action}".to_sym)
-      return unless should_run
-
       _self = self
-      run_locally { _self.post(action, self) }
-
+      run_locally { _self.process(action, self) }
     end
 
-    #
-    #
-    #
-    def post(action, backend)
-      team = fetch(:slack_team)
-      token = fetch(:slack_token)
-      webhook = fetch(:slack_webhook)
-      via_slackbot = fetch(:slack_via_slackbot)
+    def process(action, backend)
+      @backend = backend
 
-      channels = fetch(:slack_channel)
-      channel_action = "slack_channel_#{action}".to_sym
-      channels = fetch(channel_action) if fetch(channel_action)
-      channels = Array(channels)
-      if via_slackbot == false && channels.empty?
+      payload = @messaging.payload_for(action)
+      return if payload.nil?
+
+      payload = {
+        username: @messaging.username,
+        icon_url: @messaging.icon_url,
+        icon_emoji: @messaging.icon_emoji,
+      }.merge(payload)
+
+      channels = Array(@messaging.channels_for(action))
+      if !@messaging.via_slackbot? == false && channels.empty?
         channels = [nil] # default webhook channel
       end
 
-      payload = {
-        username: fetch(:slack_username),
-        icon_url: fetch(:slack_icon_url),
-        icon_emoji: fetch(:slack_icon_emoji),
-      }
-
-      payload[:attachments] = case action
-                              when :updated
-                                make_attachments(action, color: 'good')
-                              when :reverted
-                                make_attachments(action, color: '#4CBDEC')
-                              when :failed
-                                make_attachments(action, color: 'danger')
-                              else
-                                make_attachments(action)
-                              end
-
       channels.each do |channel|
-        payload[:channel] = channel
+        post(payload.merge(channel: channel))
+      end
+    end
 
-        dry_run = if ::Capistrano::Configuration.respond_to?(:dry_run?) 
-                    ::Capistrano::Configuration.dry_run?
-                  else
-                    ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
-                  end
+    private ##################################################
 
-        if dry_run
-          backend.info("[slackistrano] Slackistrano Dry Run:")
-          backend.info("[slackistrano]   Team: #{team}")
-          backend.info("[slackistrano]   Webhook: #{webhook}")
-          backend.info("[slackistrano]   Via Slackbot: #{via_slackbot}")
-          backend.info("[slackistrano]   Payload: #{payload.to_json}")
+    def post(payload)
 
-        # Post to the channel.
-        else
-
-          begin
-            response = post_to_slack(team: team,
-                                     token: token,
-                                     webhook: webhook,
-                                     via_slackbot: via_slackbot,
-                                     payload: payload)
-
-          rescue => e
-            backend.warn("[slackistrano] Error notifying Slack!")
-            backend.warn("[slackistrano]   Error: #{e.inspect}")
-          end
-
-          if response.code !~ /^2/
-            warn("[slackistrano] Slack API Failure!")
-            warn("[slackistrano]   URI: #{response.uri}")
-            warn("[slackistrano]   Code: #{response.code}")
-            warn("[slackistrano]   Message: #{response.message}")
-            warn("[slackistrano]   Body: #{response.body}") if response.message != response.body && response.body !~ /<html/
-          end
-        end
+      if dry_run?
+        post_dry_run(payload)
+        return
       end
 
+      begin
+        response = post_to_slack(payload)
+      rescue => e
+        backend.warn("[slackistrano] Error notifying Slack!")
+        backend.warn("[slackistrano]   Error: #{e.inspect}")
+      end
+
+      if response && response.code !~ /^2/
+        warn("[slackistrano] Slack API Failure!")
+        warn("[slackistrano]   URI: #{response.uri}")
+        warn("[slackistrano]   Code: #{response.code}")
+        warn("[slackistrano]   Message: #{response.message}")
+        warn("[slackistrano]   Body: #{response.body}") if response.message != response.body && response.body !~ /<html/
+      end
     end
 
-    #
-    #
-    #
-    def make_attachments(action, options={})
-      attachments = options.merge({
-        title:      fetch(:"slack_title_#{action}"),
-        pretext:    fetch(:"slack_pretext_#{action}"),
-        text:       fetch(:"slack_msg_#{action}"),
-        fields:     fetch(:"slack_fields_#{action}"),
-        fallback:   fetch(:"slack_fallback_#{action}"),
-        mrkdwn_in:  [:text, :pretext]
-      }).reject{|k, v| v.nil? }
-      [attachments]
-    end
-    private :make_attachments
-
-    #
-    #
-    #
-    def post_to_slack(via_slackbot: nil, team: nil, token: nil, webhook: nil, payload: {})
-      if via_slackbot
-        post_as_slackbot(team: team, token: token, webhook: webhook, payload: payload)
+    def post_to_slack(payload = {})
+      if @messaging.via_slackbot?
+        post_to_slack_as_slackbot(payload)
       else
-        post_as_webhook(team: team, token: token, webhook: webhook, payload: payload)
+        post_to_slack_as_webhook(payload)
       end
     end
-    private :post_to_slack
 
-    #
-    #
-    #
-    def post_as_slackbot(team: nil, token: nil, webhook: nil, payload: {})
-      uri = URI(URI.encode("https://#{team}.slack.com/services/hooks/slackbot?token=#{token}&channel=#{payload[:channel]}"))
-
-      text = payload[:attachments].collect { |a| a[:text] }.join("\n")
-
+    def post_to_slack_as_slackbot(payload = {})
+      uri = URI(URI.encode("https://#{@messaging.team}.slack.com/services/hooks/slackbot?token=#{@messaging.token}&channel=#{payload[:channel]}"))
+      text = (payload[:attachments] || [payload]).collect { |a| a[:text] }.join("\n")
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         http.request_post uri, text
       end
     end
-    private :post_as_slackbot
 
-    #
-    #
-    #
-    def post_as_webhook(team: nil, token: nil, webhook: nil, payload: {})
+    def post_to_slack_as_webhook(payload = {})
       params = {'payload' => payload.to_json}
-
-      if webhook.nil?
-        webhook = "https://#{team}.slack.com/services/hooks/incoming-webhook"
-        params.merge!('token' => token)
-      end
-
-      uri = URI(webhook)
+      uri = URI(@messaging.webhook)
       Net::HTTP.post_form(uri, params)
     end
-    private :post_as_webhook
+
+    def dry_run?
+      if ::Capistrano::Configuration.respond_to?(:dry_run?)
+        ::Capistrano::Configuration.dry_run?
+      else
+        ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
+      end
+    end
+
+    def post_dry_run(payload)
+        backend.info("[slackistrano] Slackistrano Dry Run:")
+      if @messaging.via_slackbot?
+        backend.info("[slackistrano]   Team: #{@messaging.team}")
+        backend.info("[slackistrano]   Token: #{@messaging.token}")
+      else
+        backend.info("[slackistrano]   Webhook: #{@messaging.webhook}")
+      end
+        backend.info("[slackistrano]   Payload: #{payload.to_json}")
+    end
 
   end
 end
