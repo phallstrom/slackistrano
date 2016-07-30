@@ -90,8 +90,15 @@ class and overriding several methods. Here is one example:
 ```ruby
 module Slackistrano
   class CustomMessaging < Messaging::Base
+
+    # Send failed message to #ops. Send all other messages to default channels.
+    # The #ops channel must exist prior.
     def channels_for(action)
-      super
+      if action == :failed
+        "#ops"
+      else
+        super
+      end
     end
 
     # Supress updating message.
@@ -106,7 +113,6 @@ module Slackistrano
 
     # Fancy updated message.
     # See https://api.slack.com/docs/message-attachments
-    # rubocop:disable Metrics/MethodLength
     def payload_for_updated
       {
         attachments: [{
@@ -133,8 +139,9 @@ module Slackistrano
         }]
       }
     end
-    # rubocop:enable all
 
+    # Default reverted message.  Alternatively simply do not redefine this
+    # method.
     def payload_for_reverted
       super
     end
