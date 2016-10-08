@@ -1,3 +1,3 @@
 module Slackistrano
-  VERSION = '3.1.0.beta'
+  VERSION = '3.1.0'
 end

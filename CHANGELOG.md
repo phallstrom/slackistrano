@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.1.0
+-----
+
+- An entirely new way of customizing the messages sent to Slack. See the README for details.
+
 3.0.0
 -----
 
