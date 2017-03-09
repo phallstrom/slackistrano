@@ -190,6 +190,15 @@ To set this up:
    an issue along with a screenshot of the output from `cap production
    slack:deploy:test` and I'll add it to the Wiki.
 
+## Disabling posting to Slack
+
+You can disable deployment notifactions to a specific stage by setting the `:slackistrano` 
+configuration variable to `false` instead of actual settings.
+
+```ruby
+set :slackistrano, :disabled
+```
+
 ## TODO
 
 - Notify about incorrect configuration settings.
