@@ -17,7 +17,10 @@ module Slackistrano
     def initialize(env)
       @env = env
       opts = fetch(:slackistrano, {}).dup
-      @messaging = if opts.empty?
+      @messaging = case opts
+                   when false
+                     Messaging::Null.new
+                   when -> (o) { o.empty? }
                      klass = Messaging::Deprecated.new(
                        env: @env,
                        team: fetch(:slack_team),
