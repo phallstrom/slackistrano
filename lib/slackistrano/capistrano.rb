@@ -16,8 +16,8 @@ module Slackistrano
 
     def initialize(env)
       @env = env
-      opts = fetch(:slackistrano, {}).dup
-      @messaging = case opts
+      config = fetch(:slackistrano, {})
+      @messaging = case config
                    when false
                      Messaging::Null.new
                    when -> (o) { o.empty? }
@@ -29,8 +29,9 @@ module Slackistrano
                        webhook: fetch(:slack_webhook)
                      )
                    else
+                     opts = config.dup.merge(env: @env)
                      klass = opts.delete(:klass) || Messaging::Default
-                     klass.new(opts.merge(env: @env))
+                     klass.new(opts)
                    end
     end
 
