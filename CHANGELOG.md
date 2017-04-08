@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.1.1
+-----
+
+- Allow easily disabling Slackistrano by setting :slackistrano to false [#67]
+
 3.1.0
 -----
 
