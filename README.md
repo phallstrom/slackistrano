@@ -101,12 +101,12 @@ module Slackistrano
       end
     end
 
-    # Supress updating message.
+    # Suppress updating message.
     def payload_for_updating
       nil
     end
 
-    # Supress reverting message.
+    # Suppress reverting message.
     def payload_for_reverting
       nil
     end
@@ -189,6 +189,15 @@ To set this up:
 4. If you come up with something that you think others would enjoy submit it as
    an issue along with a screenshot of the output from `cap production
    slack:deploy:test` and I'll add it to the Wiki.
+
+## Disabling posting to Slack
+
+You can disable deployment notifications to a specific stage by setting the `:slackistrano` 
+configuration variable to `false` instead of actual settings.
+
+```ruby
+set :slackistrano, false
+```
 
 ## TODO
 
