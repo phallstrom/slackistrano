@@ -192,11 +192,11 @@ To set this up:
 
 ## Disabling posting to Slack
 
-You can disable deployment notifactions to a specific stage by setting the `:slackistrano` 
+You can disable deployment notifications to a specific stage by setting the `:slackistrano` 
 configuration variable to `false` instead of actual settings.
 
 ```ruby
-set :slackistrano, :disabled
+set :slackistrano, false
 ```
 
 ## TODO
