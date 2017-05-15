@@ -110,8 +110,8 @@ module Slackistrano
     end
 
     def dry_run?
-      if ::Capistrano::Configuration.respond_to?(:dry_run?)
-        ::Capistrano::Configuration.dry_run?
+      if ::Capistrano::Configuration.env.respond_to?(:dry_run?)
+        ::Capistrano::Configuration.env.dry_run?
       else
         ::Capistrano::Configuration.env.send(:config)[:sshkit_backend] == SSHKit::Backend::Printer
       end
