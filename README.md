@@ -6,11 +6,9 @@
 
 Send notifications to [Slack](https://slack.com) about [Capistrano](http://www.capistranorb.com) deployments.
 
-**NOTE:** This README documents version >=3.1.0. You can read about 3.0.1 [here](https://github.com/phallstrom/slackistrano/tree/v3.0.1).
-
 ## Requirements
 
-- Capistrano >= 3.5.0
+- Capistrano >= 3.8.1
 - Ruby >= 2.0
 - A Slack account
 
