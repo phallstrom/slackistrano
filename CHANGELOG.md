@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.8.1
+-----
+
+- Changes to support capistrano 3.8.1 (hence the massive version bump) [#70, #71]
+
 3.1.1
 -----
 
