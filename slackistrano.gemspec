@@ -20,24 +20,11 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'capistrano', '>= 3.5.0'
+  gem.add_dependency 'capistrano', '>= 3.8.1'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'pry'
 
-  gem.post_install_message = %Q{
-  BREAKING: You must now `require 'slackistrano/capistrano'` in your Capfile.
-  Previously it was just `require 'slackistrano'`. It is also no longer necessary
-  to add `require: false` in your Gemfile, but it won't hurt to leave it.
-
-  Your files should now look like this:
-
-  Gemfile:
-
-    gem 'slackistrano'
-
-  Capfile:
-
-    require 'slackistrano/capistrano'
-  }
+  # gem.post_install_message = %Q{
+  # }
 end
