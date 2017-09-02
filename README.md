@@ -153,11 +153,12 @@ if defined?(Slackistrano::Messaging)
          payload
        end
 
-       # Override the deployer helper to pull the full name from the password file.
+       # Override the deployer helper to pull the best name available (git, password file, env vars).
        # See https://github.com/phallstrom/slackistrano/blob/master/lib/slackistrano/messaging/helpers.rb
        def deployer
          name = `git config user.name`.strip
-         name = ENV['USER'] || ENV['USERNAME'] if name.nil? || name.empty?
+         name = nil if name.empty?
+         name ||= Etc.getpwnam(ENV['USER']).gecos || ENV['USER'] || ENV['USERNAME']
          name
        end
      end
