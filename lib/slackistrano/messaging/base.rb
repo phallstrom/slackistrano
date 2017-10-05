@@ -10,14 +10,16 @@ module Slackistrano
       extend Forwardable
       def_delegators :env, :fetch
 
-      attr_reader :team, :token, :webhook
+      attr_reader :team, :token, :webhook, :options
 
-      def initialize(env: nil, team: nil, channel: nil, token: nil, webhook: nil)
-        @env = env
-        @team = team
-        @channel = channel
-        @token = token
-        @webhook = webhook
+      def initialize(options = {})
+        @options = options.dup
+
+        @env = options.delete(:env)
+        @team = options.delete(:team)
+        @channel = options.delete(:channel)
+        @token = options.delete(:token)
+        @webhook = options.delete(:webhook)
       end
 
       def payload_for_updating

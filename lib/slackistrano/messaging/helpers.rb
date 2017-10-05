@@ -3,15 +3,15 @@ module Slackistrano
     module Helpers
 
       def icon_url
-        'https://raw.githubusercontent.com/phallstrom/slackistrano/master/images/slackistrano.png'
+        options.fetch(:icon_url, 'https://raw.githubusercontent.com/phallstrom/slackistrano/master/images/slackistrano.png')
       end
 
       def icon_emoji
-        nil
+        options.fetch(:icon_emoji, nil)
       end
 
       def username
-        'Slackistrano'
+        options.fetch(:username, 'Slackistrano')
       end
 
       def deployer
