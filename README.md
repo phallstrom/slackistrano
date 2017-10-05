@@ -66,6 +66,26 @@ You have two options to notify a channel in Slack when you deploy:
    }
    ```
 
+### Optional Configuration & Overrides
+
+By default Slackistrano will use a default icon and username. These, can be
+overriden if you are using the default messaging class (ie. have not specified
+your own).
+
+1. Configure per instructions above.
+2. Add the following to `config/deploy.rb`:
+
+   ```ruby
+   set :slackistrano, {
+    ...
+    username: 'Foobar the Deployer',
+    icon_emoji: ':thumbsup:', # takes precedence over icon_url
+    icon_url: 'https://avatars2.githubusercontent.com/u/16705?v=4&s=40',
+    ...
+   }
+   ```
+
+
 ### Test your Configuration
 
 Test your setup by running the following command. This will post each stage's
