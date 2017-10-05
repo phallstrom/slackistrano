@@ -1,5 +1,11 @@
 # Slackistrano Change Log
 
+3.8.2
+-----
+
+- Allow overriding icon_url, icon_emoji, and usename without needing custom
+  messaging class [#78, #68]
+
 3.8.1
 -----
 
