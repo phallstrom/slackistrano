@@ -155,7 +155,8 @@ if defined?(Slackistrano::Messaging)
                short: true
              }],
              fallback: super[:text]
-           }]
+           }],
+           text: "<!here> Application Deployed!"
          }
        end
 
