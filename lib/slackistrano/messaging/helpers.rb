@@ -15,7 +15,8 @@ module Slackistrano
       end
 
       def deployer
-        ENV['USER'] || ENV['USERNAME']
+        default = ENV['USER'] || ENV['USERNAME']
+        fetch(:local_user, default)
       end
 
       def branch

@@ -35,6 +35,18 @@ describe Slackistrano::Messaging::Default do
     end
   end
 
+  describe '#deployer' do
+    it "delegates to fetch" do
+      expect(subject).to receive(:fetch).with(:local_user, anything)
+      subject.deployer
+    end
+
+    it "has a default" do
+      ENV['USER'] = 'cappy'
+      expect(subject.deployer).to eq 'cappy'
+    end
+  end
+
   describe '#branch' do
     it "delegates to fetch" do
       expect(subject).to receive(:fetch).with(:branch)
