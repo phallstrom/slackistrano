@@ -4,6 +4,10 @@ class NilPayloadMessaging < Slackistrano::Messaging::Default
   def payload_for_updating
     nil
   end
+
+  def channels_for(action)
+    "testing"
+  end
 end
 
 describe Slackistrano do

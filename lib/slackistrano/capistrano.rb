@@ -53,7 +53,7 @@ module Slackistrano
       }.merge(payload)
 
       channels = Array(@messaging.channels_for(action))
-      if !@messaging.via_slackbot? == false && channels.empty?
+      if !@messaging.via_slackbot? && channels.empty?
         channels = [nil] # default webhook channel
       end
 

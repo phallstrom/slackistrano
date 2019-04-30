@@ -1,8 +1,14 @@
 require 'spec_helper'
 
+class DryRunMessaging < Slackistrano::Messaging::Default
+  def channels_for(action)
+    "testing"
+  end
+end
+
 describe Slackistrano do
   before(:all) do
-    set :slackistrano, { klass: Slackistrano::Messaging::Default }
+    set :slackistrano, { klass: DryRunMessaging }
   end
 
   %w[updating reverting updated reverted failed].each do |stage|
