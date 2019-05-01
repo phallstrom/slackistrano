@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.8.3
+-----
+
+- Fix improper boolean check when using not using slackbot and channels are empty [#90]
+
 3.8.2
 -----
 
