@@ -8,7 +8,7 @@ describe Slackistrano do
   end
 
   context "when :slack_channel is an array" do
-    %w[updating reverting updated reverted failed].each do |stage|
+    %w[starting reverting updated reverted failed].each do |stage|
       it "posts to slack on slack:deploy:#{stage} in every channel" do
         expect_any_instance_of(Slackistrano::Capistrano).to receive(:post).twice
         Rake::Task["slack:deploy:#{stage}"].execute

@@ -1,5 +1,5 @@
 namespace :deploy do
-  task :updating do
+  task :starting do
   end
   task :reverting do
   end

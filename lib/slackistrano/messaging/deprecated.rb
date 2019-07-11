@@ -31,7 +31,7 @@ module Slackistrano
         fetch("slack_channel_#{action}".to_sym) || super
       end
 
-      def payload_for_updating
+      def payload_for_starting
         make_message(__method__, super)
       end
 

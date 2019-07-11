@@ -5,7 +5,7 @@ describe Slackistrano::Messaging::Deprecated do
     set :slackistrano, {}
   end
 
-  %w[updating reverting updated reverted failed].each do |stage|
+  %w[starting reverting updated reverted failed].each do |stage|
     it "posts to slack on slack:deploy:#{stage}" do
       set :slack_webhook, -> { "..." }
       set :slack_run, ->{ true }
@@ -32,12 +32,12 @@ describe Slackistrano::Messaging::Deprecated do
   end
 
   [ # stage, color, channel
-    ['updating', nil, nil],
+    ['starting', nil, nil],
     ['reverting', nil, nil],
     ['updated', 'good', nil],
     ['reverted', 'warning', nil],
     ['failed', 'danger', nil],
-    ['updating', nil, 'starting_channel'],
+    ['starting', nil, 'starting_channel'],
     ['updated', 'good', 'finished_channel'],
     ['reverted', 'warning', 'rollback_channel'],
     ['failed', 'danger', 'failed_channel'],

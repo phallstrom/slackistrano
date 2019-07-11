@@ -2,7 +2,7 @@ module Slackistrano
   module Messaging
     class Default < Base
 
-      def payload_for_updating
+      def payload_for_starting
         super
       end
 

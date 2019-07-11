@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class NilPayloadMessaging < Slackistrano::Messaging::Default
-  def payload_for_updating
+  def payload_for_starting
     nil
   end
 
@@ -15,9 +15,9 @@ describe Slackistrano do
     set :slackistrano, { klass: NilPayloadMessaging }
   end
 
-  it "does not post on updating" do
+  it "does not post on starting" do
     expect_any_instance_of(Slackistrano::Capistrano).not_to receive(:post)
-    Rake::Task["slack:deploy:updating"].execute
+    Rake::Task["slack:deploy:starting"].execute
   end
 
   it "posts on updated" do

@@ -22,7 +22,7 @@ module Slackistrano
         @webhook = options.delete(:webhook)
       end
 
-      def payload_for_updating
+      def payload_for_starting
         {
           text: "#{deployer} has started deploying branch #{branch} of #{application} to #{stage}"
         }

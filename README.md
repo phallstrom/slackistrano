@@ -120,8 +120,8 @@ if defined?(Slackistrano::Messaging)
          end
        end
 
-       # Suppress updating message.
-       def payload_for_updating
+       # Suppress starting message.
+       def payload_for_starting
          nil
        end
 

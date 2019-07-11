@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+3.9.0
+-----
+
+- **BREAKING:** Send starting message on `starting` process instead of `updating`
+
 3.8.3
 -----
 
