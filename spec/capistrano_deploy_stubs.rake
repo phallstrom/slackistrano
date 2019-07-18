@@ -1,4 +1,6 @@
 namespace :deploy do
+  task :starting do
+  end
   task :updating do
   end
   task :reverting do

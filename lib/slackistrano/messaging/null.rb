@@ -1,6 +1,10 @@
 module Slackistrano
   module Messaging
     class Null < Base
+      def payload_for_starting
+        nil
+      end
+
       def payload_for_updating
         nil
       end

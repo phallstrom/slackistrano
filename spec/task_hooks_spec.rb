@@ -4,6 +4,10 @@ describe Slackistrano do
 
   describe "before/after hooks" do
 
+    it "invokes slack:deploy:starting before deploy:starting" do
+      expect(Rake::Task['deploy:starting'].prerequisites).to include 'slack:deploy:starting'
+    end
+
     it "invokes slack:deploy:updating before deploy:updating" do
       expect(Rake::Task['deploy:updating'].prerequisites).to include 'slack:deploy:updating'
     end
@@ -28,7 +32,7 @@ describe Slackistrano do
     end
 
     it "invokes all slack:deploy tasks before slack:deploy:test" do
-      expect(Rake::Task['slack:deploy:test'].prerequisites).to match %w[updating updated reverting reverted failed]
+      expect(Rake::Task['slack:deploy:test'].prerequisites).to match %w[starting updating updated reverting reverted failed]
     end
   end
 

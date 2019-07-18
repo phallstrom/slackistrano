@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+4.0.1
+-----
+
+- Send message on deploy:starting in addition to deploy:updating [#93]
+
 4.0.0
 -----
 
