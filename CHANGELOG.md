@@ -1,5 +1,11 @@
 # Slackistrano Change Log
 
+4.0.0
+-----
+
+- **BREAKING:** The Messaging::Deprecated has been removed. You must use
+  the new configuration options as specified in the README.
+
 3.8.3
 -----
 
