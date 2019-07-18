@@ -17,21 +17,12 @@ module Slackistrano
     def initialize(env)
       @env = env
       config = fetch(:slackistrano, {})
-      @messaging = case config
-                   when false
-                     Messaging::Null.new
-                   when -> (o) { o.empty? }
-                     klass = Messaging::Deprecated.new(
-                       env: @env,
-                       team: fetch(:slack_team),
-                       channel: fetch(:slack_channel),
-                       token: fetch(:slack_token),
-                       webhook: fetch(:slack_webhook)
-                     )
-                   else
+      @messaging = if config
                      opts = config.dup.merge(env: @env)
                      klass = opts.delete(:klass) || Messaging::Default
                      klass.new(opts)
+                   else
+                     Messaging::Null.new
                    end
     end
 

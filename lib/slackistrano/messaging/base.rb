@@ -72,5 +72,4 @@ module Slackistrano
 end
 
 require_relative 'default'
-require_relative 'deprecated'
 require_relative 'null'
