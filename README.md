@@ -100,6 +100,25 @@ $ cap production slack:deploy:test
 Deploy your application like normal and you should see messages in the channel
 you specified.
 
+## Customizing the hooks
+
+If you wish to take control over when and what slackistrano hooks are fired, then you can use the option in `deploy.rb`:
+
+```ruby
+set :use_custom_slackistrano_hooks, true
+```
+
+This allows you to set custom hooks for all the slackistrano tasks:
+
+```ruby
+'slack:deploy:starting'
+'slack:deploy:updating'
+'slack:deploy:reverting'
+'slack:deploy:updated'
+'slack:deploy:reverted'
+'slack:deploy:failed'
+```
+
 ## Customizing the Messaging
 
 You can customize the messaging posted to Slack by providing your own messaging
@@ -221,7 +240,7 @@ To set this up:
 
 ## Disabling posting to Slack
 
-You can disable deployment notifications to a specific stage by setting the `:slackistrano` 
+You can disable deployment notifications to a specific stage by setting the `:slackistrano`
 configuration variable to `false` instead of actual settings.
 
 ```ruby
