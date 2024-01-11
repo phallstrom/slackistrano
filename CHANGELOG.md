@@ -1,5 +1,10 @@
 # Slackistrano Change Log
 
+4.0.2
+-----
+
+- Make it possible to overwrite all slackistrano hooks [#98]
+
 4.0.1
 -----
 
@@ -68,4 +73,3 @@
 - **BREAKING:** Renamed all `***_starting` settings to `***_updating`
 - **BREAKING:** Renamed all `***_finished` settings to `***_updated`
 - Added rollback options `***_reverting` and `***_reverted` [#19, #31]
-
