@@ -87,7 +87,7 @@ module Slackistrano
     end
 
     def post_to_slack_as_slackbot(payload = {})
-      uri = URI(URI.encode("https://#{@messaging.team}.slack.com/services/hooks/slackbot?token=#{@messaging.token}&channel=#{payload[:channel]}"))
+      uri = URI(URI::Parser.new.escape("https://#{@messaging.team}.slack.com/services/hooks/slackbot?token=#{@messaging.token}&channel=#{payload[:channel]}"))
       text = (payload[:attachments] || [payload]).collect { |a| a[:text] }.join("\n")
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         http.request_post uri, text
