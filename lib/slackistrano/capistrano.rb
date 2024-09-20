@@ -16,19 +16,38 @@ module Slackistrano
 
     def initialize(env)
       @env = env
-      config = fetch(:slackistrano, {})
-      @messaging = if config
-                     opts = config.dup.merge(env: @env)
-                     klass = opts.delete(:klass) || Messaging::Default
-                     klass.new(opts)
-                   else
-                     Messaging::Null.new
-                   end
+      slackistrano = fetch(:slackistrano, {})
+
+      targets = if slackistrano.respond_to?(:to_ary)
+                  slackistrano.to_ary || [slackistrano]
+                else
+                  [slackistrano]
+                end
+
+      @targets = targets.map do |config|
+        if config
+          opts = config.dup.merge(env: @env)
+          klass = opts.delete(:klass) || Messaging::Default
+          klass.new(opts)
+        else
+          Messaging::Null.new
+        end
+      end
+
+      @messaging = nil
     end
 
     def run(action)
       _self = self
-      run_locally { _self.process(action, self) }
+
+      @targets.each do |messaging|
+        @messaging = messaging
+        run_locally do
+          _self.process(action, self)
+        end
+      end
+
+      @messaging = nil
     end
 
     def process(action, backend)
