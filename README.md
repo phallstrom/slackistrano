@@ -85,6 +85,27 @@ your own).
    }
    ```
 
+### Different webhooks/Slackbots for channels
+
+Pass array of hashes to `slackistrano` configuration to send notifications to different workspaces and slackbots:
+
+```ruby
+set :slackistrano, [
+  {
+    channel: '#your-channel',
+    webhook: 'your-incoming-webhook-url'
+  },
+  {
+    channel: '#your-second-channel',
+    team: 'your-team-name',
+    token: 'your-token'
+  },
+  {
+    channel: '#your-third-channel',
+    webhook: 'your-second-incoming-webhook-url'
+  }
+]
+```
 
 ### Test your Configuration
 
